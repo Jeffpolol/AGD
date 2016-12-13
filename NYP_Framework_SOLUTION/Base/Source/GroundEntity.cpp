@@ -97,7 +97,6 @@ GroundEntity* Create::Ground(const std::string& _meshName1, const std::string& _
 		return nullptr;
 
 	GroundEntity* result = new GroundEntity(modelMesh1, modelMesh2);
-	//result->SetActive(true);
 	EntityManager::GetInstance()->AddEntity(result);
 	return result;
 }

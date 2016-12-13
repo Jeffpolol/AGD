@@ -19,10 +19,6 @@ public:
 	inline void SetScale(const Vector3& _value){ scale = _value; };
 	inline Vector3 GetScale(){ return scale; };
 
-	inline void SetActive(const bool active){ m_Active = active; }
-	inline bool GetActive(){ return m_Active; }
-
-
 	bool IsDone();
 	void SetIsDone(const bool _value);
 
@@ -42,7 +38,6 @@ protected:
 	bool isDone;
 	bool m_bCollider;
 	bool bLaser;
-	bool m_Active;
 };
 
 #endif // ENTITY_BASE_H

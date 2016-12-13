@@ -51,14 +51,9 @@ void FPSCamera::Update(double dt)
 	}
 	if(KeyboardController::GetInstance()->IsKeyDown('D'))
 	{
-		//Mtx44 rotate;
-		//rotate.SetToRotation(45, 0, 1, 0);
 		Vector3 view = (target - position).Normalized();
-		//view = rotate*view;
-		//up = rotate * up;
 		Vector3 right = view.Cross(up);
 		right.y = 0;
-		
 		right.Normalize();
 		position += right * CAMERA_SPEED * (float)dt;
 		target += right * CAMERA_SPEED * (float)dt;

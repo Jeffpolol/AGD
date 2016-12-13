@@ -29,6 +29,7 @@ public:
 	}
 	~CPlayerInfo(void);
 
+	bool L_MOUSE;
 	// Initialise this class instance
 	void Init(void);
 	// Returns true if the player is on ground
@@ -96,6 +97,8 @@ public:
 	void AttachCamera(FPSCamera* _cameraPtr);
 	void DetachCamera(void);
 
+	void FireWeapon();
+
 private:
 	Vector3 defaultPosition, defaultTarget, defaultUp;
 	Vector3 position, target, up;
@@ -104,6 +107,7 @@ private:
 
 	double m_dSpeed;
 	double m_dAcceleration;
+	double m_roll;
 
 	bool m_bJumpUpwards;
 	double m_dJumpSpeed;

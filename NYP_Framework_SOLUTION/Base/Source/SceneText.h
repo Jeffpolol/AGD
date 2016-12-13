@@ -27,6 +27,9 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	void GenerateAsteroids();
+
+
 private:
 	SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
 

@@ -14,6 +14,7 @@
 #include "ShaderProgram.h"
 #include "EntityManager.h"
 
+#include "Asteroid.h"
 #include "GenericEntity.h"
 #include "GroundEntity.h"
 #include "TextEntity.h"
@@ -148,22 +149,26 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("GEO_GRASS_LIGHTGREEN")->textureID = LoadTGA("Image//grass_lightgreen.tga");
 	MeshBuilder::GetInstance()->GenerateCube("cubeSG", Color(1.0f, 0.64f, 0.0f), 1.0f);
 
+
+	MeshBuilder::GetInstance()->GenerateOBJ("asteroid", "OBJ//asteroid OBJ.obj");
+	MeshBuilder::GetInstance()->GetMesh("asteroid")->textureID = LoadTGA("Image//noise.tga");
+
 	MeshBuilder::GetInstance()->GenerateOBJ("arm", "OBJ//arm.obj");
 	MeshBuilder::GetInstance()->GetMesh("arm")->textureID = LoadTGA("Image//arm.tga");
 
 
-	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_LEFT", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_RIGHT", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_TOP", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BOTTOM", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("SKYBOX_FRONT")->textureID = LoadTGA("Image//SkyBox//skybox_front.tga");
-	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BACK")->textureID = LoadTGA("Image//SkyBox//skybox_back.tga");
-	MeshBuilder::GetInstance()->GetMesh("SKYBOX_LEFT")->textureID = LoadTGA("Image//SkyBox//skybox_left.tga");
-	MeshBuilder::GetInstance()->GetMesh("SKYBOX_RIGHT")->textureID = LoadTGA("Image//SkyBox//skybox_right.tga");
-	MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//skybox_top.tga");
-	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_bottom.tga");
+	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
+	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
+	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_LEFT", Color(1, 1, 1), 1.f);
+	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_RIGHT", Color(1, 1, 1), 1.f);
+	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_TOP", Color(1, 1, 1), 1.f);
+	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BOTTOM", Color(1, 1, 1), 1.f);
+	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_FRONT")->textureID = LoadTGA("Image//SkyBox//skybox_front.tga");
+	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_BACK")->textureID = LoadTGA("Image//SkyBox//skybox_back.tga");
+	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_LEFT")->textureID = LoadTGA("Image//SkyBox//skybox_left.tga");
+	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_RIGHT")->textureID = LoadTGA("Image//SkyBox//skybox_right.tga");
+	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//skybox_top.tga");
+	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_bottom.tga");
 
 
 
@@ -178,9 +183,16 @@ void SceneText::Init()
 	CSpatialPartition::GetInstance()->SetLevelOfDetails(40000.0f, 160000.0f);
 	EntityManager::GetInstance()->SetSpatialPartition(CSpatialPartition::GetInstance());
 
-	// Create entities into the scene
-	
+	// Create entities into the sceneVector3(Math::RandFloatMinMax(-10, 10), Math::RandFloatMinMax(-10, 10) , Math::RandFloatMinMax(-10, 10))
 
+
+	float scale = 1;//Math::RandFloatMinMax(1, 4);
+	Asteroid* ast = Create::asteroid("asteroid", Vector3(0, 10, 0),Vector3(0,-1,0) , Vector3(scale, scale, scale), 0);
+	ast->SetCollider(true);
+	float hsize = scale * 2;
+	ast->SetAABB(Vector3(hsize, hsize, hsize), Vector3(-hsize, -hsize, -hsize));
+	//ast->InitLOD("asteroid", "sphere", "cubeSG");
+	
 	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 
@@ -189,43 +201,43 @@ void SceneText::Init()
 	aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
 	aCube->InitLOD("cube", "sphere", "cubeSG");
 
-	// Add the pointer to this new entity to the Scene Graph
-	CSceneNode* theNode = CSceneGraph::GetInstance()->AddNode(aCube);
-	if (theNode == NULL)
-	{
-		cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
-	}
+	//// Add the pointer to this new entity to the Scene Graph
+	//CSceneNode* theNode = CSceneGraph::GetInstance()->AddNode(aCube);
+	//if (theNode == NULL)
+	//{
+	//	cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
+	//}
 
-	GenericEntity* anotherCube = Create::Entity("cube", Vector3(-20.0f, 1.1f, -20.0f));
-	anotherCube->SetCollider(true);
-	anotherCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
-	CSceneNode* anotherNode = theNode->AddChild(anotherCube);
-	if (anotherNode == NULL)
-	{
-		cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
-	}
-	
-	GenericEntity* baseCube = Create::Asset("cube", Vector3(0.0f, 0.0f, 0.0f));
+	//GenericEntity* anotherCube = Create::Entity("cube", Vector3(-20.0f, 1.1f, -20.0f));
+	//anotherCube->SetCollider(true);
+	//anotherCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+
+
+	//CSceneNode* anotherNode = theNode->AddChild(anotherCube);
+	//if (anotherNode == NULL)
+	//{
+	//	cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
+	//}
+	//
+	/*GenericEntity* baseCube = Create::Asset("cube", Vector3(0.0f, 0.0f, 0.0f));
 	CSceneNode* baseNode = CSceneGraph::GetInstance()->AddNode(baseCube);
 
 	CUpdateTransformation* baseMtx = new CUpdateTransformation();
 	baseMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
 	baseMtx->SetSteps(-60, 60);
-	//baseNode->SetUpdateTransformation(baseMtx);
+	baseNode->SetUpdateTransformation(baseMtx);
 
-	GenericEntity* childCube = Create::Asset("cubeSG", Vector3(0.75f, 0.0f, 0.0f),Vector3(0.5f,0.5f,2.5f));
+	GenericEntity* childCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
 	CSceneNode* childNode = baseNode->AddChild(childCube);
-	//childNode->ApplyTranslate(1.50f, 0.0f, 0.0f);
+	childNode->ApplyTranslate(0.0f, 1.0f, 0.0f);
+
+	GenericEntity* grandchildCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
+	CSceneNode* grandchildNode = childNode->AddChild(grandchildCube);
+	grandchildNode->ApplyTranslate(0.0f, 0.0f, 1.0f);
 	CUpdateTransformation* aRotateMtx = new CUpdateTransformation();
 	aRotateMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
-	aRotateMtx->SetSteps(-60, 60);
-	childNode->SetUpdateTransformation(aRotateMtx);
-
-	GenericEntity* grandchildCube = Create::Asset("cubeSG", Vector3(-0.75f, 0.0f, 0.0f), Vector3(0.5f, 0.5f, 2.5f));
-	CSceneNode* grandchildNode = childNode->AddChild(grandchildCube);
-//	grandchildNode->ApplyTranslate(0.0f, 0.0f, 1.50f);
-	
-	//grandchildNode->SetUpdateTransformation(aRotateMtx);
+	aRotateMtx->SetSteps(-120, 60);*/
+ 	
 	// Create a CEnemy instance
 	theEnemy = new CEnemy();
 	theEnemy->Init();
@@ -233,7 +245,7 @@ void SceneText::Init()
 	groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
 //	Create::Text3DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));	
 	Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
-	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.38f, 1.0f));
+	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
 
 
 	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
@@ -379,6 +391,10 @@ void SceneText::Render()
 
 }
 	
+void SceneText::GenerateAsteroids()
+{
+
+}
 void SceneText::Exit()
 {
 	// Detach camera from other entities

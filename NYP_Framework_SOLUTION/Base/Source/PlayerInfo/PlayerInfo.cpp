@@ -26,6 +26,7 @@ CPlayerInfo::CPlayerInfo(void)
 	, m_pTerrain(NULL)
 	, primaryWeapon(NULL)
 	, secondaryWeapon(NULL)
+	, L_MOUSE(false)
 {
 }
 
@@ -51,23 +52,24 @@ void CPlayerInfo::Init(void)
 	defaultPosition.Set(0,0,10);
 	defaultTarget.Set(0,0,0);
 	defaultUp.Set(0,1,0);
-
+	L_MOUSE = false;
 	// Set the current values
 	position.Set(0, 0, 10);
 	target.Set(0, 0, 0);
 	up.Set(0, 1, 0);
+	m_roll = 0;
 
 	// Set Boundary
 	maxBoundary.Set(1,1,1);
 	minBoundary.Set(-1, -1, -1);
 
 	// Set the pistol as the primary weapon
-	primaryWeapon = new CPistol();
+	primaryWeapon = new CLaserBlaster();
 	primaryWeapon->Init();
 	// Set the laser blaster as the secondary weapon
 	//secondaryWeapon = new CLaserBlaster();
 	//secondaryWeapon->Init();
-	secondaryWeapon = new CLaserBlaster();
+	secondaryWeapon = new CPistol();
 	secondaryWeapon->Init();
 }
 
@@ -272,6 +274,7 @@ void CPlayerInfo::UpdateFreeFall(double dt)
  ********************************************************************************/
 void CPlayerInfo::Update(double dt)
 {
+	bool strafing = false;
 	double mouse_diff_x, mouse_diff_y;
 	MouseController::GetInstance()->GetMouseDelta(mouse_diff_x, mouse_diff_y);
 
@@ -294,12 +297,18 @@ void CPlayerInfo::Update(double dt)
 		{
 			position -= viewVector.Normalized() * (float)m_dSpeed * (float)dt;
 		}
+
 		if (KeyboardController::GetInstance()->IsKeyDown('A'))
 		{
 			rightUV = (viewVector.Normalized()).Cross(up);
 			rightUV.y = 0;
 			rightUV.Normalize();
 			position -= rightUV * (float)m_dSpeed * (float)dt;
+
+			Vector3 temp = rightUV * (float)m_dSpeed * (float)dt;
+			if (up.x < 0.5 && up.z < 0.5 && up.x > -0.5 && up.z > -0.5)
+				up -= temp.Normalized()*0.1;
+			strafing = true;
 		}
 		else if (KeyboardController::GetInstance()->IsKeyDown('D'))
 		{
@@ -307,70 +316,103 @@ void CPlayerInfo::Update(double dt)
 			rightUV.y = 0;
 			rightUV.Normalize();
 			position += rightUV * (float)m_dSpeed * (float)dt;
+
+			Vector3 temp = rightUV * (float)m_dSpeed * (float)dt;
+			if (up.x < 0.5 && up.z < 0.5 && up.x > -0.5 && up.z > -0.5)
+			up += temp.Normalized()*0.1;
+			strafing = true;
+
 		}
+
+	
 		// Constrain the position
 		Constrain();
 		// Update the target
 		target = position + viewVector;
 	}
 
-	// Rotate the view direction
-	if (KeyboardController::GetInstance()->IsKeyDown(VK_LEFT) ||
-		KeyboardController::GetInstance()->IsKeyDown(VK_RIGHT) ||
-		KeyboardController::GetInstance()->IsKeyDown(VK_UP) ||
-		KeyboardController::GetInstance()->IsKeyDown(VK_DOWN))
+	if (!strafing)
 	{
-		Vector3 viewUV = (target - position).Normalized();
-		Vector3 rightUV;
-		if (KeyboardController::GetInstance()->IsKeyDown(VK_LEFT))
+		if (up.x < 0)
 		{
-			float yaw = (float)m_dSpeed * (float)dt;
-			Mtx44 rotation;
-			rotation.SetToRotation(yaw, 0, 1, 0);
-			viewUV = rotation * viewUV;
-			target = position + viewUV;
-			rightUV = viewUV.Cross(up);
-			rightUV.y = 0;
-			rightUV.Normalize();
-			up = rightUV.Cross(viewUV).Normalized();
+			up.x += dt;
+			Math::Clamp(up.x, -0.5f, 0.f);
 		}
-		else if (KeyboardController::GetInstance()->IsKeyDown(VK_RIGHT))
+		if (up.x > 0)
 		{
-			float yaw = (float)(-m_dSpeed * (float)dt);
-			Mtx44 rotation;
-			rotation.SetToRotation(yaw, 0, 1, 0);
-			viewUV = rotation * viewUV;
-			target = position + viewUV;
-			rightUV = viewUV.Cross(up);
-			rightUV.y = 0;
-			rightUV.Normalize();
-			up = rightUV.Cross(viewUV).Normalized();
+			up.x -= dt;
+			Math::Clamp(up.x, 0.f, 0.5f);
 		}
-		if (KeyboardController::GetInstance()->IsKeyDown(VK_UP))
+		if (up.z < 0)
 		{
-			float pitch = (float)(m_dSpeed * (float)dt);
-			rightUV = viewUV.Cross(up);
-			rightUV.y = 0;
-			rightUV.Normalize();
-			up = rightUV.Cross(viewUV).Normalized();
-			Mtx44 rotation;
-			rotation.SetToRotation(pitch, rightUV.x, rightUV.y, rightUV.z);
-			viewUV = rotation * viewUV;
-			target = position + viewUV;
+			up.z += dt;
+			Math::Clamp(up.z, -0.5f, 0.f);
 		}
-		else if (KeyboardController::GetInstance()->IsKeyDown(VK_DOWN))
+		if (up.z > 0)
 		{
-			float pitch = (float)(-m_dSpeed * (float)dt);
-			rightUV = viewUV.Cross(up);
-			rightUV.y = 0;
-			rightUV.Normalize();
-			up = rightUV.Cross(viewUV).Normalized();
-			Mtx44 rotation;
-			rotation.SetToRotation(pitch, rightUV.x, rightUV.y, rightUV.z);
-			viewUV = rotation * viewUV;
-			target = position + viewUV;
+			up.z -= dt;
+			Math::Clamp(up.z, 0.f, 0.5f);
 		}
+		//up = Vector3(0, 1, 0);
 	}
+
+	//// Rotate the view direction
+	//if (KeyboardController::GetInstance()->IsKeyDown(VK_LEFT) ||
+	//	KeyboardController::GetInstance()->IsKeyDown(VK_RIGHT) ||
+	//	KeyboardController::GetInstance()->IsKeyDown(VK_UP) ||
+	//	KeyboardController::GetInstance()->IsKeyDown(VK_DOWN))
+	//{
+	//	Vector3 viewUV = (target - position).Normalized();
+	//	Vector3 rightUV;
+	//	if (KeyboardController::GetInstance()->IsKeyDown(VK_LEFT))
+	//	{
+	//		float yaw = (float)m_dSpeed * (float)dt;
+	//		Mtx44 rotation;
+	//		rotation.SetToRotation(yaw, 0, 1, 0);
+	//		viewUV = rotation * viewUV;
+	//		target = position + viewUV;
+	//		rightUV = viewUV.Cross(up);
+	//		rightUV.y = 0;
+	//		rightUV.Normalize();
+	//		up = rightUV.Cross(viewUV).Normalized();
+	//	}
+	//	else if (KeyboardController::GetInstance()->IsKeyDown(VK_RIGHT))
+	//	{
+	//		float yaw = (float)(-m_dSpeed * (float)dt);
+	//		Mtx44 rotation;
+	//		rotation.SetToRotation(yaw, 0, 1, 0);
+	//		viewUV = rotation * viewUV;
+	//		target = position + viewUV;
+	//		rightUV = viewUV.Cross(up);
+	//		rightUV.y = 0;
+	//		rightUV.Normalize();
+	//		up = rightUV.Cross(viewUV).Normalized();
+	//	}
+	//	if (KeyboardController::GetInstance()->IsKeyDown(VK_UP))
+	//	{
+	//		float pitch = (float)(m_dSpeed * (float)dt);
+	//		rightUV = viewUV.Cross(up);
+	//		rightUV.y = 0;
+	//		rightUV.Normalize();
+	//		up = rightUV.Cross(viewUV).Normalized();
+	//		Mtx44 rotation;
+	//		rotation.SetToRotation(pitch, rightUV.x, rightUV.y, rightUV.z);
+	//		viewUV = rotation * viewUV;
+	//		target = position + viewUV;
+	//	}
+	//	else if (KeyboardController::GetInstance()->IsKeyDown(VK_DOWN))
+	//	{
+	//		float pitch = (float)(-m_dSpeed * (float)dt);
+	//		rightUV = viewUV.Cross(up);
+	//		rightUV.y = 0;
+	//		rightUV.Normalize();
+	//		up = rightUV.Cross(viewUV).Normalized();
+	//		Mtx44 rotation;
+	//		rotation.SetToRotation(pitch, rightUV.x, rightUV.y, rightUV.z);
+	//		viewUV = rotation * viewUV;
+	//		target = position + viewUV;
+	//	}
+	//}
 
 	//Update the camera direction based on mouse move
 	{
@@ -386,19 +428,21 @@ void CPlayerInfo::Update(double dt)
 			rightUV = viewUV.Cross(up);
 			rightUV.y = 0;
 			rightUV.Normalize();
-			up = rightUV.Cross(viewUV).Normalized();
+			//up = rightUV.Cross(viewUV).Normalized();
 		}
 		{
 			float pitch = (float)(-m_dSpeed * camera_pitch * (float)dt);
 			rightUV = viewUV.Cross(up);
 			rightUV.y = 0;
 			rightUV.Normalize();
-			up = rightUV.Cross(viewUV).Normalized();
+			//up = rightUV.Cross(viewUV).Normalized();
 			Mtx44 rotation;
 			rotation.SetToRotation(pitch, rightUV.x, rightUV.y, rightUV.z);
 			viewUV = rotation * viewUV;
 			target = position + viewUV;
 		}
+
+
 	}
 
 	// If the user presses SPACEBAR, then make him jump
@@ -430,14 +474,31 @@ void CPlayerInfo::Update(double dt)
 	// if Mouse Buttons were activated, then act on them
 	if (MouseController::GetInstance()->IsButtonPressed(MouseController::LMB))
 	{
-		if (primaryWeapon)
-			primaryWeapon->Discharge(position, target, this);
+		L_MOUSE = true;
+	
 	}
-	else if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
+	else if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
+	{
+		L_MOUSE = false;
+	}
+	//else if (!MouseController::GetInstance()->IsButtonPressed(MouseController::LMB) && L_MOUSE)
+	//{
+	//	L_MOUSE = false;
+	//}
+	if (L_MOUSE)
+		FireWeapon();
+
+
+	if (MouseController::GetInstance()->IsButtonPressed(MouseController::RMB))
 	{
 		if (secondaryWeapon)
 			secondaryWeapon->Discharge(position, target, this);
 	}
+
+
+
+
+
 
 	// If the user presses R key, then reset the view to default values
 	if (KeyboardController::GetInstance()->IsKeyDown('P'))
@@ -457,6 +518,14 @@ void CPlayerInfo::Update(double dt)
 		attachedCamera->SetCameraTarget(target);
 		attachedCamera->SetCameraUp(up);
 	}
+}
+
+void CPlayerInfo::FireWeapon()
+{
+	//if (primaryWeapon)
+
+	primaryWeapon->Discharge(position, target, this);
+
 }
 
 // Constrain the position within the borders

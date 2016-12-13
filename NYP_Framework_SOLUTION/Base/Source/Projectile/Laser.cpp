@@ -111,6 +111,7 @@ void CLaser::Render(void)
 			modelStack.PopMatrix();
 		modelStack.PopMatrix();
 	modelStack.PopMatrix();
+
 }
 
 // Create a projectile and add it into EntityManager
@@ -127,6 +128,9 @@ CLaser* Create::Laser(const std::string& _meshName,
 		return nullptr;
 
 	CLaser* result = new CLaser(modelMesh);
+
+	//_position;
+
 	result->Set(_position, _direction, m_fLifetime, m_fSpeed);
 	result->SetLength(m_fLength);
 	result->SetStatus(true);

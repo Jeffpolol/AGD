@@ -54,7 +54,6 @@ void EntityManager::Render()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
-		if ((*it)->GetActive()==true)
 		(*it)->Render();
 	}
 
@@ -62,8 +61,8 @@ void EntityManager::Render()
 	CSceneGraph::GetInstance()->Render();
 
 	// Render the Spatial Partition
-	/*if (theSpatialPartition)
-		theSpatialPartition->Render();*/
+	if (theSpatialPartition)
+		theSpatialPartition->Render();
 }
 
 // Render the UI entities
