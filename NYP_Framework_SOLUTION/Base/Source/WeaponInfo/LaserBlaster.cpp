@@ -54,7 +54,7 @@ void CLaserBlaster::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _so
 											_direction,
 											10.0f,
 											2.0f,
-											400.0f,
+											800.0f,
 											_source);
 			aLaser->SetIsLaser(true);
 			aLaser->SetCollider(false);

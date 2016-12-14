@@ -150,7 +150,7 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("GEO_GRASS_LIGHTGREEN")->textureID = LoadTGA("Image//grass_lightgreen.tga");
 	MeshBuilder::GetInstance()->GenerateCube("cubeSG", Color(1.0f, 0.64f, 0.0f), 1.0f);
 
-	MeshBuilder::GetInstance()->GenerateSphere("explosion", Color(1, 9.9,1), 10, 28, 0.5f);
+	MeshBuilder::GetInstance()->GenerateSphere("explosion", Color(1, 1,1), 10, 28, 0.5f);
 	MeshBuilder::GetInstance()->GenerateOBJ("asteroid", "OBJ//asteroid OBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("asteroid")->textureID = LoadTGA("Image//noise.tga");
 
@@ -174,7 +174,7 @@ void SceneText::Init()
 
 
 
-	MeshBuilder::GetInstance()->GenerateRay("laser", 10.0f);
+	MeshBuilder::GetInstance()->GenerateRay("laser", 30.0f);
 	MeshBuilder::GetInstance()->GenerateQuad("GRIDMESH", Color(1, 1, 1), 10.f);
 
 	// Set up the Spatial Partition and pass it to the EntityManager to manage
@@ -194,7 +194,7 @@ void SceneText::Init()
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 
 
-	Explosion* ex = Create::explosion("explosion", Vector3(0,0,0));
+	//Explosion* ex = Create::explosion("explosion", Vector3(0,0,0));
 	//aCube->SetCollider(true);
 
 	GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));

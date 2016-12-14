@@ -1,0 +1,98 @@
+﻿Build started 12/14/2016 5:34:05 PM.
+     1>Project "C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Base\Base.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/Common/Source" /I"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glew/include" /I"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glfw/include" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _VARIADIC_MAX=10 /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Common\Source\EntityBase.cpp ..\Common\Source\GraphicsManager.cpp ..\Common\Source\MeshBuilder.cpp ..\Common\Source\SceneManager.cpp Source\Application.cpp Source\Asteroid.cpp Source\Enemy\Enemy.cpp Source\EntityManager.cpp Source\FPSCamera.cpp Source\GenericEntity.cpp Source\GroundEntity.cpp Source\LevelOfDetails\LevelOfDetails.cpp Source\Light.cpp Source\main.cpp Source\OBJMesh.cpp Source\PlayerInfo\PlayerInfo.cpp Source\Projectile\Grenade.cpp Source\Projectile\Laser.cpp Source\Projectile\Projectile.cpp Source\SceneGraph\SceneGraph.cpp Source\SceneGraph\SceneNode.cpp Source\SceneGraph\Transform.cpp Source\SceneGraph\UpdateTransformation.cpp Source\SceneText.cpp Source\SkyBox\SkyBoxEntity.cpp Source\SpatialPartition\Grid.cpp Source\SpatialPartition\SpatialPartition.cpp Source\SpriteEntity.cpp Source\TextEntity.cpp Source\WeaponInfo\GrenadeThrow.cpp Source\WeaponInfo\LaserBlaster.cpp Source\WeaponInfo\Pistol.cpp Source\WeaponInfo\WeaponInfo.cpp
+         EntityBase.cpp
+         GraphicsManager.cpp
+         MeshBuilder.cpp
+         SceneManager.cpp
+         Application.cpp
+         Asteroid.cpp
+         Enemy.cpp
+         EntityManager.cpp
+         FPSCamera.cpp
+         GenericEntity.cpp
+         GroundEntity.cpp
+         LevelOfDetails.cpp
+         Light.cpp
+         main.cpp
+         OBJMesh.cpp
+         PlayerInfo.cpp
+     1>Source\PlayerInfo\PlayerInfo.cpp(310): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>Source\PlayerInfo\PlayerInfo.cpp(322): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>Source\PlayerInfo\PlayerInfo.cpp(338): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>Source\PlayerInfo\PlayerInfo.cpp(343): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+     1>Source\PlayerInfo\PlayerInfo.cpp(348): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>Source\PlayerInfo\PlayerInfo.cpp(353): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+         Grenade.cpp
+     1>Source\Projectile\Grenade.cpp(54): warning C4018: '<' : signed/unsigned mismatch
+     1>Source\Projectile\Grenade.cpp(71): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>Source\Projectile\Grenade.cpp(75): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+         Laser.cpp
+         Projectile.cpp
+         SceneGraph.cpp
+         Compiling...
+         SceneNode.cpp
+         Transform.cpp
+         UpdateTransformation.cpp
+         SceneText.cpp
+     1>Source\SceneText.cpp(243): warning C4305: 'argument' : truncation from 'double' to 'float'
+         SkyBoxEntity.cpp
+         Grid.cpp
+     1>Source\SpatialPartition\Grid.cpp(42): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>Source\SpatialPartition\Grid.cpp(43): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>Source\SpatialPartition\Grid.cpp(123): warning C4018: '<' : signed/unsigned mismatch
+     1>Source\SpatialPartition\Grid.cpp(136): warning C4018: '<' : signed/unsigned mismatch
+     1>Source\SpatialPartition\Grid.cpp(175): warning C4018: '<' : signed/unsigned mismatch
+     1>Source\SpatialPartition\Grid.cpp(203): warning C4018: '<' : signed/unsigned mismatch
+         SpatialPartition.cpp
+     1>Source\SpatialPartition\SpatialPartition.cpp(71): warning C4244: 'argument' : conversion from 'int' to 'const float', possible loss of data
+     1>Source\SpatialPartition\SpatialPartition.cpp(154): warning C4018: '<' : signed/unsigned mismatch
+     1>Source\SpatialPartition\SpatialPartition.cpp(178): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>Source\SpatialPartition\SpatialPartition.cpp(180): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         SpriteEntity.cpp
+         TextEntity.cpp
+         GrenadeThrow.cpp
+         LaserBlaster.cpp
+         Pistol.cpp
+         WeaponInfo.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Release\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Release" /LIBPATH:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glfw/lib-msvc100" /LIBPATH:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glew/lib" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Release\Base.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Release\Base.lib" /MACHINE:X86 /SAFESEH Release\EntityBase.obj
+         Release\GraphicsManager.obj
+         Release\MeshBuilder.obj
+         Release\SceneManager.obj
+         Release\Application.obj
+         Release\Asteroid.obj
+         Release\Enemy.obj
+         Release\EntityManager.obj
+         Release\FPSCamera.obj
+         Release\GenericEntity.obj
+         Release\GroundEntity.obj
+         Release\LevelOfDetails.obj
+         Release\Light.obj
+         Release\main.obj
+         Release\OBJMesh.obj
+         Release\PlayerInfo.obj
+         Release\Grenade.obj
+         Release\Laser.obj
+         Release\Projectile.obj
+         Release\SceneGraph.obj
+         Release\SceneNode.obj
+         Release\Transform.obj
+         Release\UpdateTransformation.obj
+         Release\SceneText.obj
+         Release\SkyBoxEntity.obj
+         Release\Grid.obj
+         Release\SpatialPartition.obj
+         Release\SpriteEntity.obj
+         Release\TextEntity.obj
+         Release\GrenadeThrow.obj
+         Release\LaserBlaster.obj
+         Release\Pistol.obj
+         Release\WeaponInfo.obj
+     1>LINK : fatal error LNK1181: cannot open input file 'Common.lib'
+     1>Done Building Project "C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Base\Base.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:09.65

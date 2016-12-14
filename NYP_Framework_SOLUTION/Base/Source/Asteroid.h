@@ -1,13 +1,11 @@
 #pragma once
-#include "EntityBase.h"
-#include "Vector3.h"
-#include "Collider/Collider.h"
-#include "LevelOfDetails\LevelOfDetails.h"
+#include "GenericEntity.h"
+
 
 class Mesh;
 //class CPlayerInfo;
 
-class Asteroid : public EntityBase, public CCollider, public CLevelOfDetails
+class Asteroid : public GenericEntity
 {
 public:
 	Asteroid(void);
@@ -16,32 +14,17 @@ public:
 public:
 
 	void SetSpeed(const float sped);
-
 	// Activate the projectile. true == active, false == inactive
-	void SetStatus(const bool m_bStatus);
-	// get status of the projectile. true == active, false == inactive
-	bool GetStatus(void) const;
 	// Set the position and direction of the projectile
 	Vector3 GetVel(void);
-
 	void SetVel(Vector3 newvel);
-
-
-
-
-	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
-	// Render this projectile
-	virtual void Render(void);
 
 
 protected:
 	// The model mesh for this projectile
 	Mesh* modelMesh;
-	Mesh* DeathMesh;
 	// Boolean flag to indicate if this projectile is active. If not active, then do not compute/update
-	bool m_bStatus;
-	
 	float m_speed;
 	// The direction of the projectile
 	Vector3 m_vel;

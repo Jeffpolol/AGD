@@ -3,6 +3,7 @@
 #include "Collider/Collider.h"
 #include "Projectile/Laser.h"
 #include "SceneGraph\SceneGraph.h"
+#include "Explosion.h"
 
 #include <iostream>
 using namespace std;
@@ -363,6 +364,9 @@ bool EntityManager::CheckForCollision(void)
 					{
 						(*colliderThis)->SetIsDone(true);
 						(*colliderThat)->SetIsDone(true);
+
+						GenericEntity *entity = dynamic_cast<GenericEntity*>(*colliderThat);
+						Explosion* ex = Create::explosion("explosion",entity->GetScale(), entity->GetPosition());
 
 					
 						// Remove from Scene Graph

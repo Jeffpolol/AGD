@@ -12,16 +12,19 @@ public:
 	~Explosion();
 
 	virtual void Update(double dt);
+	void SetMaxScale(float scale);
 
 private:
 
-	float lifetime;
+	bool ismax;
+	float m_lifetime;
+	float m_maxscale;
 
 };
 
 namespace Create
 {
 	Explosion* explosion(const std::string& _meshName,
-		const Vector3& _position);
+		const Vector3& _position, const Vector3& _scale);
 };
 #endif

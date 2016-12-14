@@ -542,7 +542,7 @@ Mesh* MeshBuilder::GenerateRay(const std::string &meshName, const float length)
 	Vertex v;
 	std::vector<Vertex> vertex_buffer_data;
 	v.pos.Set(0, length, 0);
-	v.color.Set(1, 0, 0);
+	v.color.Set(7, 7, 0);
 	vertex_buffer_data.push_back(v);
 	v.pos.Set(0, 0, 0);
 	v.color.Set(1, 0, 0);

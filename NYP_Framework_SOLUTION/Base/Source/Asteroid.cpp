@@ -1,5 +1,4 @@
 #include "Asteroid.h"
-
 #include "MeshBuilder.h"
 #include "EntityManager.h"
 #include "GraphicsManager.h"
@@ -7,20 +6,17 @@
 
 Asteroid::Asteroid(void)
 : modelMesh(NULL)
-, m_bStatus(false)
 , m_vel(0, 0, 0)
 , m_speed(10.0f)
-
 {
 }
 
 Asteroid::Asteroid(Mesh* _modelMesh)
 : modelMesh(_modelMesh)
-, m_bStatus(false)
 , m_vel(0, 0, 0)
 , m_speed(10.0f)
-
 {
+	SetMesh(_modelMesh);
 }
 
 Asteroid::~Asteroid(void)
@@ -29,17 +25,7 @@ Asteroid::~Asteroid(void)
 
 }
 
-// Activate the projectile. true == active, false == inactive
-void Asteroid::SetStatus(const bool m_bStatus)
-{
-	this->m_bStatus = m_bStatus;
-}
 
-// get status of the projectile. true == active, false == inactive
-bool Asteroid::GetStatus(void) const
-{
-	return m_bStatus;
-}
 
 // Get the direction of the projectile
 Vector3 Asteroid::GetVel(void)
@@ -62,9 +48,6 @@ void Asteroid::SetSpeed(float theNewDirection)
 // Update the status of this projectile
 void Asteroid::Update(double dt)
 {
-	if (m_bStatus == false)
-		return;
-
 		//SetStatus(false);
 		//SetIsDone(true);	// This method is to inform the EntityManager that it should remove this instance
 	// Update Position
@@ -75,26 +58,7 @@ void Asteroid::Update(double dt)
 }
 
 
-// Render this projectile
-void Asteroid::Render(void)
-{
-	if (m_bStatus == false)
-		return;
 
-	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
-	modelStack.PushMatrix();
-	modelStack.Translate(position.x, position.y, position.z);
-	modelStack.Scale(scale.x, scale.y, scale.z);
-	//RenderHelper::RenderMesh(modelMesh);
-	if (GetLODStatus() == true)
-	{
-		if (theDetailLevel != NO_DETAILS)
-			RenderHelper::RenderMesh(GetLODMesh());
-	}
-	else
-		RenderHelper::RenderMesh(modelMesh);
-	modelStack.PopMatrix();
-}
 
 // Create a projectile and add it into EntityManager
 Asteroid* Create::asteroid(const std::string& _meshName,
@@ -112,7 +76,6 @@ Asteroid* Create::asteroid(const std::string& _meshName,
 	result->SetScale(_Scale);
 	result->SetVel(_direction);
 	result->SetSpeed(m_fSpeed);
-	result->SetStatus(true);
 	result->SetCollider(true);
 	EntityManager::GetInstance()->AddEntity(result);
 	return result;
