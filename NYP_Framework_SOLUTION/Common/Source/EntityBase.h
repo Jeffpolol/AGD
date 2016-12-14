@@ -19,6 +19,9 @@ public:
 	inline void SetScale(const Vector3& _value){ scale = _value; };
 	inline Vector3 GetScale(){ return scale; };
 
+	inline void SetIsBall(const bool ball){ this->isBall = ball; }
+	inline bool GetBall(){ return isBall; }
+
 	bool IsDone();
 	void SetIsDone(const bool _value);
 
@@ -38,6 +41,7 @@ protected:
 	bool isDone;
 	bool m_bCollider;
 	bool bLaser;
+	bool isBall;
 };
 
 #endif // ENTITY_BASE_H

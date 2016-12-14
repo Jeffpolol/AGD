@@ -14,6 +14,7 @@
 #include "ShaderProgram.h"
 #include "EntityManager.h"
 
+#include "Ball.h"
 #include "Explosion.h"
 #include "Asteroid.h"
 #include "GenericEntity.h"
@@ -172,22 +173,57 @@ void SceneText::Init()
 	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_bottom.tga");
 
 
+	MeshBuilder::GetInstance()->GenerateOBJ("ballHigh", "OBJ//ball_body1.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballHigh")->textureID = LoadTGA("Image//ball.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("ballMid", "OBJ//ball_body2.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballMid")->textureID = LoadTGA("Image//ball.tga");
 
 
 	MeshBuilder::GetInstance()->GenerateRay("laser", 30.0f);
+
+	MeshBuilder::GetInstance()->GenerateOBJ("ballLow", "OBJ//ball_body3.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballLow")->textureID = LoadTGA("Image//ball.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("ballarmHigh", "OBJ//ball_arm1.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballarmHigh")->textureID = LoadTGA("Image//ball.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("ballarmMid", "OBJ//ball_arm2.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballarmMid")->textureID = LoadTGA("Image//ball.tga");
+
+
+	MeshBuilder::GetInstance()->GenerateOBJ("ballarmLow", "OBJ//ball_arm3.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballarmLow")->textureID = LoadTGA("Image//ball.tga");
+
+
+	MeshBuilder::GetInstance()->GenerateOBJ("ballgunHigh", "OBJ//ball_gun1.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballgunHigh")->textureID = LoadTGA("Image//ball.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("ballgunMid", "OBJ//ball_gun2.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballgunMid")->textureID = LoadTGA("Image//ball.tga");
+
+
+	MeshBuilder::GetInstance()->GenerateOBJ("ballgunLow", "OBJ//ball_gun3.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballgunLow")->textureID = LoadTGA("Image//ball.tga");
+
+
+	//float hsize = scale * 2;
+	//ast->SetAABB(Vector3(hsize, hsize, hsize), Vector3(-hsize, -hsize, -hsize));
+	MeshBuilder::GetInstance()->GenerateRay("laser", 10.0f);
+
 	MeshBuilder::GetInstance()->GenerateQuad("GRIDMESH", Color(1, 1, 1), 10.f);
 
 	// Set up the Spatial Partition and pass it to the EntityManager to manage
 	CSpatialPartition::GetInstance()->Init(100, 100, 10, 10);
 	CSpatialPartition::GetInstance()->SetMesh("GRIDMESH");
 	CSpatialPartition::GetInstance()->SetCamera(&camera);
-	CSpatialPartition::GetInstance()->SetLevelOfDetails(40000.0f, 160000.0f);
+	CSpatialPartition::GetInstance()->SetLevelOfDetails(4000.0f, 16000.0f);
 	EntityManager::GetInstance()->SetSpatialPartition(CSpatialPartition::GetInstance());
 
 	// Create entities into the sceneVector3(Math::RandFloatMinMax(-10, 10), Math::RandFloatMinMax(-10, 10) , Math::RandFloatMinMax(-10, 10))
 
 	GenerateAsteroids();
-
+	GenerateRobots();
 	//ast->InitLOD("asteroid", "sphere", "cubeSG");
 	
 	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
@@ -201,6 +237,9 @@ void SceneText::Init()
 	aCube->SetCollider(true);
 	aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
 	aCube->InitLOD("cube", "sphere", "cubeSG");
+
+
+	
 
 	//// Add the pointer to this new entity to the Scene Graph
 	//CSceneNode* theNode = CSceneGraph::GetInstance()->AddNode(aCube);
@@ -257,6 +296,7 @@ void SceneText::Init()
 	groundEntity->SetPosition(Vector3(0, -10, 0));
 	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
 	groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
+	groundEntity->SetIsBall(false);
 	playerInfo->SetTerrain(groundEntity);
 	theEnemy->SetTerrain(groundEntity);
 
@@ -271,7 +311,60 @@ void SceneText::Init()
 	}
 	textObj[0]->SetText("HELLO WORLD");
 }
+void SceneText::GenerateRobots()
+{
+	for (int i = 0; i <30; i++)
+	{
+		
+		//Vector3 position(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));
+		//Vector3 vel(Math::RandFloatMinMax(-10.f, 10.f), Math::RandFloatMinMax(0.f, 0.f), Math::RandFloatMinMax(-10.f, 10.f));
+		Vector3 vel(0.1f, 0.1f, 0.1f);
+		Vector3 position(0+(i*5), 0, 0);
+		//Vector3 vel(0, 0, 0);
+		Ball* ballRobot = Create::ball("ballHigh", Vector3(0,0,0), vel ,Vector3(1, 1, 1), 1);
+		ballRobot->SetCollider(false);
+		ballRobot->SetAABB(
+			Vector3(ballRobot->GetScale().x * 2, ballRobot->GetScale().y * 2, ballRobot->GetScale().z * 2),
+			Vector3(-(ballRobot->GetScale().x * 2), -(ballRobot->GetScale().y * 2), -(ballRobot->GetScale().z * 2)));
+		//CSceneNode* ballNode = CSceneGraph::GetInstance()->AddNode(ballRobot);
+		//ballNode->ApplyTranslate(position.x, position.y, position.z);
+		ballRobot->SetPosition(position);
+		ballRobot->InitLOD("ballHigh", "ballMid", "ballLow");
+		CSceneNode* ballNode = CSceneGraph::GetInstance()->AddNode(ballRobot);
+		ballRobot->setBallNode(ballNode);
+		ballRobot->getBallNode()->ApplyTranslate(position.x, position.y, position.z);
+		
+	
 
+		Ball* ballgunRobot = Create::ball("ballgunHigh", Vector3(0,0,0), 0, Vector3(1, 1, 1), 1);
+		ballgunRobot->SetCollider(false);
+		ballgunRobot->SetAABB(
+			Vector3(ballgunRobot->GetScale().x * 2, ballgunRobot->GetScale().y * 2, ballgunRobot->GetScale().z * 2),
+			Vector3(-(ballgunRobot->GetScale().x * 2), -(ballgunRobot->GetScale().y * 2), -(ballgunRobot->GetScale().z * 2)));
+		ballgunRobot->InitLOD("ballgunHigh", "ballgunMid", "ballgunLow");
+		CSceneNode* grandchildNode = ballRobot->getBallNode()->AddChild(ballgunRobot);
+		ballgunRobot->setBallNode(grandchildNode);
+		//ballgunRobot->SetPosition(Vector3(-1.5f + position.x, 0 + position.y, 0 + position.z));
+		ballgunRobot->getBallNode()->ApplyTranslate(-1.5f + position.x, 0 + position.y, 0 + position.z);
+
+		Ball* ballarmRobot = Create::ball("ballarmHigh", Vector3(0,0,0), 0, Vector3(1, 1, 1), 1);
+		ballarmRobot->SetCollider(false);
+		ballarmRobot->SetAABB(
+			Vector3(ballarmRobot->GetScale().x * 2, ballarmRobot->GetScale().y * 2, ballarmRobot->GetScale().z * 2),
+			Vector3(-(ballarmRobot->GetScale().x * 2), -(ballarmRobot->GetScale().y * 2), -(ballarmRobot->GetScale().z * 2)));
+		ballarmRobot->InitLOD("ballarmHigh", "ballarmMid", "ballarmLow");
+
+		CUpdateTransformation* baseMtx = new CUpdateTransformation();
+		CSceneNode* childNode = ballRobot->getBallNode()->AddChild(ballarmRobot);
+		ballarmRobot->setBallNode(childNode);
+		
+	//	ballarmRobot->SetPosition(Vector3(1.5f + position.x, 0 + position.y, 0 + position.z));
+		ballarmRobot->getBallNode()->ApplyTranslate(1.5f + position.x, 0 + position.y, 0 + position.z);
+		baseMtx->ApplyUpdate(1.0f, 1.0f, 0.0f, 0.0f);
+		baseMtx->SetSteps(-90, 90);
+		ballarmRobot->getBallNode()->SetUpdateTransformation(baseMtx);
+	}
+}
 void SceneText::Update(double dt)
 {
 	// Update our entities
@@ -394,7 +487,7 @@ void SceneText::Render()
 	
 void SceneText::GenerateAsteroids()
 {
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		float scale = Math::RandFloatMinMax(1, 8);
 		Vector3 position(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));

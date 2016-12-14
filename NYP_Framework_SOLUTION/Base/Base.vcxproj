@@ -16,8 +16,11 @@
     <ClCompile Include="..\Common\Source\MeshBuilder.cpp" />
     <ClCompile Include="..\Common\Source\SceneManager.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Asteroid.cpp" />
+    <ClCompile Include="Source\Ball.cpp" />
     <ClCompile Include="Source\Enemy\Enemy.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
+    <ClCompile Include="Source\Explosion.cpp" />
     <ClCompile Include="Source\FPSCamera.cpp" />
     <ClCompile Include="Source\GenericEntity.cpp" />
     <ClCompile Include="Source\GroundEntity.cpp" />
@@ -46,8 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Asteroid.h" />
+    <ClInclude Include="Source\Ball.h" />
     <ClInclude Include="Source\Enemy\Enemy.h" />
     <ClInclude Include="Source\EntityManager.h" />
+    <ClInclude Include="Source\Explosion.h" />
     <ClInclude Include="Source\FPSCamera.h" />
     <ClInclude Include="Source\GenericEntity.h" />
     <ClInclude Include="Source\GroundEntity.h" />
