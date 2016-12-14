@@ -12,10 +12,12 @@ class GenericEntity : public EntityBase, public CCollider, public CLevelOfDetail
 {
 public:
 	GenericEntity(Mesh* _modelMesh);
+	GenericEntity();
 	virtual ~GenericEntity();
 
 	virtual void Update(double _dt);
 	virtual void Render();
+	void SetMesh(Mesh* _modelMesh);
 
 	// Set the maxAABB and minAABB
 	void SetAABB(Vector3 maxAABB, Vector3 minAABB);

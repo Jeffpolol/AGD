@@ -364,7 +364,7 @@ bool EntityManager::CheckForCollision(void)
 						(*colliderThis)->SetIsDone(true);
 						(*colliderThat)->SetIsDone(true);
 
-
+					
 						// Remove from Scene Graph
 						if (CSceneGraph::GetInstance()->DeleteNode((*colliderThis)) == true)
 						{

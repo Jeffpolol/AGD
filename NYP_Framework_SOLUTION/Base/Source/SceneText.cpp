@@ -14,6 +14,7 @@
 #include "ShaderProgram.h"
 #include "EntityManager.h"
 
+#include "Explosion.h"
 #include "Asteroid.h"
 #include "GenericEntity.h"
 #include "GroundEntity.h"
@@ -149,7 +150,7 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("GEO_GRASS_LIGHTGREEN")->textureID = LoadTGA("Image//grass_lightgreen.tga");
 	MeshBuilder::GetInstance()->GenerateCube("cubeSG", Color(1.0f, 0.64f, 0.0f), 1.0f);
 
-
+	MeshBuilder::GetInstance()->GenerateSphere("explosion", Color(1, 9.9,1), 10, 28, 0.5f);
 	MeshBuilder::GetInstance()->GenerateOBJ("asteroid", "OBJ//asteroid OBJ.obj");
 	MeshBuilder::GetInstance()->GetMesh("asteroid")->textureID = LoadTGA("Image//noise.tga");
 
@@ -185,16 +186,16 @@ void SceneText::Init()
 
 	// Create entities into the sceneVector3(Math::RandFloatMinMax(-10, 10), Math::RandFloatMinMax(-10, 10) , Math::RandFloatMinMax(-10, 10))
 
+	GenerateAsteroids();
 
-	float scale = 1;//Math::RandFloatMinMax(1, 4);
-	Asteroid* ast = Create::asteroid("asteroid", Vector3(0, 10, 0),Vector3(0,-1,0) , Vector3(scale, scale, scale), 0);
-	ast->SetCollider(true);
-	float hsize = scale * 2;
-	ast->SetAABB(Vector3(hsize, hsize, hsize), Vector3(-hsize, -hsize, -hsize));
 	//ast->InitLOD("asteroid", "sphere", "cubeSG");
 	
 	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
+
+
+	Explosion* ex = Create::explosion("explosion", Vector3(0,0,0));
+	//aCube->SetCollider(true);
 
 	GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
 	aCube->SetCollider(true);
@@ -243,7 +244,7 @@ void SceneText::Init()
 	theEnemy->Init();
 
 	groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
-//	Create::Text3DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));	
+	Create::Text2DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));	
 	Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
 
@@ -393,7 +394,17 @@ void SceneText::Render()
 	
 void SceneText::GenerateAsteroids()
 {
-
+	for (int i = 0; i < 100; i++)
+	{
+		float scale = Math::RandFloatMinMax(1, 8);
+		Vector3 position(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));
+		Vector3 vel(Math::RandFloatMinMax(-100.f, 100.f), Math::RandFloatMinMax(-30.f, 30.f), Math::RandFloatMinMax(-90.f, 80.f));
+		Asteroid* ast = Create::asteroid("asteroid", position, vel, Vector3(scale, scale, scale), 1);
+		ast->InitLOD("asteroid", "sphere", "cubeSG");
+		ast->SetCollider(true);
+		float hsize = scale * 2;
+		ast->SetAABB(Vector3(hsize, hsize, hsize), Vector3(-hsize, -hsize, -hsize));
+	}
 }
 void SceneText::Exit()
 {

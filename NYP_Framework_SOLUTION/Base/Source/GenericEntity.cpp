@@ -8,9 +8,17 @@ GenericEntity::GenericEntity(Mesh* _modelMesh)
 	: modelMesh(_modelMesh)
 {
 }
+GenericEntity::GenericEntity()
+{
+}
 
 GenericEntity::~GenericEntity()
 {
+}
+
+void GenericEntity::SetMesh(Mesh* _modelMesh)
+{
+	modelMesh = _modelMesh;
 }
 
 void GenericEntity::Update(double _dt)
