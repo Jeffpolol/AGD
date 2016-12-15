@@ -19,19 +19,19 @@ void CLaserBlaster::Init(void)
 	CWeaponInfo::Init();
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 20;
+	magRounds = 5;
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 20;
+	maxMagRounds = 5;
 	// The current total number of rounds currently carried by this player
-	totalRounds = 800;
+	totalRounds = 200;
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 800;
+	maxTotalRounds = 200;
 
 	// The time between shots
-	timeBetweenShots = 0.24;
+	timeBetweenShots = 0.1667;
 	// The elapsed time (between shots)
 	elapsedTime = 0.0;
-	SetReloadTime(1.2);
+
 	// Boolean flag to indicate if weapon can fire now
 	bFire = true;
 }
@@ -58,6 +58,7 @@ void CLaserBlaster::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _so
 											_source);
 			aLaser->SetIsLaser(true);
 			aLaser->SetCollider(false);
+			aLaser->SetIsBall(false);
 			//aLaser->SetCollider(true);
 			//aLaser->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
 			bFire = false;

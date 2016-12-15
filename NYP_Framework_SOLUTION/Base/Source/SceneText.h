@@ -28,7 +28,7 @@ public:
 	virtual void Exit();
 
 	void GenerateAsteroids();
-
+	void GenerateRobots();
 
 private:
 	SceneText(SceneManager* _sceneMgr); // This is used to register to SceneManager
@@ -37,11 +37,7 @@ private:
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;
 	FPSCamera camera;
-
 	TextEntity* textObj[3];
-	TextEntity* ammotxt;
-	TextEntity* hptxt;
-
 	Light* lights[2];
 
 	GenericEntity* theCube;

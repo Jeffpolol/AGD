@@ -14,7 +14,7 @@
 CPlayerInfo *CPlayerInfo::s_instance = 0;
 
 CPlayerInfo::CPlayerInfo(void)
-	: m_dSpeed(100.0)
+	: m_dSpeed(40.0)
 	, m_dAcceleration(10.0)
 	, m_bJumpUpwards(false)
 	, m_dJumpSpeed(10.0)
@@ -27,7 +27,6 @@ CPlayerInfo::CPlayerInfo(void)
 	, primaryWeapon(NULL)
 	, secondaryWeapon(NULL)
 	, L_MOUSE(false)
-	, m_health(100)
 {
 }
 void CPlayerInfo::setPlayer(GenericEntity* player)
@@ -79,15 +78,6 @@ void CPlayerInfo::Init(void)
 	//secondaryWeapon->Init();
 	secondaryWeapon = new CPistol();
 	secondaryWeapon->Init();
-
-	//set the player hitbox
-
-	m_hitbox = Create::Entity("cube", position,Vector3(20,20,20));
-	m_hitbox->SetCollider(true);
-	float s = 5;
-	m_hitbox->SetAABB(Vector3(s, s, s), Vector3(-s, -s, -s));
-	m_hitbox->SetDestructible(0);
-	
 }
 
 // Returns true if the player is on ground
@@ -343,7 +333,7 @@ void CPlayerInfo::Update(double dt)
 		player->SetPosition(position);
 	
 		// Constrain the position
-		//Constrain();
+		Constrain();
 		// Update the target
 		target = position + viewVector;
 	}
@@ -438,8 +428,6 @@ void CPlayerInfo::Update(double dt)
 
 		{
 			float yaw = (float)(-m_dSpeed * camera_yaw * (float)dt);
-			
-
 			Mtx44 rotation;
 			rotation.SetToRotation(yaw, 0, 1, 0);
 			viewUV = rotation * viewUV;
@@ -524,11 +512,11 @@ void CPlayerInfo::Update(double dt)
 	{
 		Reset();
 	}
-	//else
-	//{
-	//	UpdateJumpUpwards(dt);
-	//	UpdateFreeFall(dt);
-	//}
+	else
+	{
+		UpdateJumpUpwards(dt);
+		UpdateFreeFall(dt);
+	}
 
 	// If a camera is attached to this playerInfo class, then update it
 	if (attachedCamera)
@@ -537,8 +525,6 @@ void CPlayerInfo::Update(double dt)
 		attachedCamera->SetCameraTarget(target);
 		attachedCamera->SetCameraUp(up);
 	}
-	m_hitbox->SetPosition(Vector3(position.x,position.y,position.z));
-
 }
 
 void CPlayerInfo::FireWeapon()
@@ -584,19 +570,4 @@ void CPlayerInfo::AttachCamera(FPSCamera* _cameraPtr)
 void CPlayerInfo::DetachCamera()
 {
 	attachedCamera = nullptr;
-}
-
-CWeaponInfo* CPlayerInfo::Getweapon()
-{
-	return primaryWeapon;
-}
-
-void CPlayerInfo::SetHealth(int health)
-{
-	m_health = health;
-}
-
-int CPlayerInfo::GetHealth()
-{
-	return m_health;
 }

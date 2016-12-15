@@ -91,16 +91,12 @@ void CLaser::Render(void)
 	if (m_fLifetime < 0.0f)
 		return;
 
-
-	
-
-
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();
 		// Reset the model stack
 		modelStack.LoadIdentity();
 		// We introduce a small offset to y position so that we can see the laser beam.
-		modelStack.Translate(position.x, position.y, position.z);
+		modelStack.Translate(position.x, position.y-0.001f, position.z);
 		//modelStack.Scale(scale.x, scale.y, scale.z);
 		modelStack.PushMatrix();
 		modelStack.Rotate(180 / Math::PI * angle_z, 0.0f, 1.0f, 0.0f);

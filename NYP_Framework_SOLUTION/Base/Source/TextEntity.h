@@ -23,7 +23,7 @@ public:
 
 	virtual void Update(double _dt);
 	virtual void Render();
-	virtual void RenderText();
+	virtual void RenderUI();
 
 	inline void SetPosition(const Vector3& _value){ position = _value; };
 	inline Vector3 GetPosition(){ return position; };

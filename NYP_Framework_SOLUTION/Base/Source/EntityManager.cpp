@@ -55,6 +55,7 @@ void EntityManager::Render()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
+		if ((*it)->GetBall()==false)
 		(*it)->Render();
 	}
 
@@ -62,8 +63,8 @@ void EntityManager::Render()
 	CSceneGraph::GetInstance()->Render();
 
 	// Render the Spatial Partition
-	if (theSpatialPartition)
-		theSpatialPartition->Render();
+	//if (theSpatialPartition)
+	//	theSpatialPartition->Render();
 }
 
 // Render the UI entities
@@ -74,24 +75,10 @@ void EntityManager::RenderUI()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
+		if ((*it)->GetBall()==false)
 		(*it)->RenderUI();
 	}
 }
-
-void EntityManager::RenderText()
-{
-	
-	std::list<EntityBase*>::iterator it, end;
-	end = entityList.end();
-	for (it = entityList.begin(); it != end; ++it)
-	{
-		(*it)->RenderText();
-	}
-}
-
-
-
-
 
 // Add an entity to this EntityManager
 void EntityManager::AddEntity(EntityBase* _newEntity, bool bAddToSpatialPartition)
@@ -421,10 +408,7 @@ bool EntityManager::CheckForCollision(void)
 					{
 						if (CheckAABBCollision(thisEntity, thatEntity))
 						{
-							if (thisEntity->GetIsDestructible())
 							thisEntity->SetIsDone(true);
-
-							if (thatEntity->GetIsDestructible())
 							thatEntity->SetIsDone(true);
 						}
 					}

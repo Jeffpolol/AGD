@@ -11,9 +11,7 @@ CWeaponInfo::CWeaponInfo()
 	, maxTotalRounds(8)
 	, timeBetweenShots(0.5)
 	, elapsedTime(0.0)
-	, Reloadtime(0.0)
-	, rTime(0.0)
-	, bFire(true), bReload(false)
+	, bFire(true)
 {
 }
 
@@ -130,40 +128,12 @@ void CWeaponInfo::Init(void)
 // Update the elapsed time
 void CWeaponInfo::Update(const double dt)
 {
-	if (bReload)
-	{
-		bFire = false;
-		rTime += dt;
-		if (rTime >= Reloadtime)
-		{
-			rTime = 0;
-			if (magRounds < maxMagRounds)
-			{
-				if (maxMagRounds - magRounds <= totalRounds)
-				{
-					totalRounds -= maxMagRounds - magRounds;
-					magRounds = maxMagRounds;
-				}
-				else
-				{
-					magRounds += totalRounds;
-					totalRounds = 0;
-				}
-			}
-			bReload = false;
-		}
-		return;
-	}
-
-
 	elapsedTime += dt;
 	if (elapsedTime > timeBetweenShots)
 	{
 		bFire = true;
 		elapsedTime = 0.0;
 	}
-
-	
 }
 
 // Discharge this weapon
@@ -197,13 +167,19 @@ void CWeaponInfo::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _sour
 // Reload this weapon
 void CWeaponInfo::Reload(void)
 {
-	bReload = true;
-
-}
-
-void CWeaponInfo::SetReloadTime(double rtime)
-{
-	Reloadtime = rtime;
+	if (magRounds < maxMagRounds)
+	{
+		if (maxMagRounds - magRounds <= totalRounds)
+		{
+			totalRounds -= maxMagRounds - magRounds;
+			magRounds = maxMagRounds;
+		}
+		else
+		{
+			magRounds += totalRounds;
+			totalRounds = 0;
+		}
+	}
 }
 
 // Add rounds
