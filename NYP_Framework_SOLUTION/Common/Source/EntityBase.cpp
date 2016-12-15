@@ -24,6 +24,9 @@ void EntityBase::Render()
 void EntityBase::RenderUI()
 {
 }
+void EntityBase::RenderText()
+{
+}
 
 bool EntityBase::IsDone()
 {

@@ -66,6 +66,8 @@ public:
 	// Set the terrain for the player info
 	void SetTerrain(GroundEntity* m_pTerrain);
 
+
+	CWeaponInfo* Getweapon();
 	// Get position
 	Vector3 GetPos(void) const;
 	// Get target

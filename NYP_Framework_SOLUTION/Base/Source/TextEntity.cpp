@@ -36,7 +36,7 @@ void TextEntity::Render()
 	modelStack.PopMatrix();
 }
 
-void TextEntity::RenderUI()
+void TextEntity::RenderText()
 {
 	if (mode == MODE_3D)
 		return;

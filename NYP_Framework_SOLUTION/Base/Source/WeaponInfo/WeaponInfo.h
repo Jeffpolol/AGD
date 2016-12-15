@@ -21,10 +21,13 @@ protected:
 
 	// The time between shots in milliseconds
 	double timeBetweenShots;
+	double Reloadtime;
 	// The elapsed time (between shots) in milliseconds
 	double elapsedTime;
+	double rTime;
 	// Boolean flag to indicate if weapon can fire now
 	bool bFire;
+	bool bReload;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);
@@ -66,6 +69,8 @@ public:
 	virtual void Discharge(Vector3 position, Vector3 target, CPlayerInfo* _source = NULL);
 	// Reload this weapon
 	void Reload(void);
+	void SetReloadTime(double time);
+	inline bool GetIsreload(){ return bReload; };
 	// Add rounds
 	void AddRounds(const int newRounds);
 

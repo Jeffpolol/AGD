@@ -326,7 +326,7 @@ void CPlayerInfo::Update(double dt)
 
 	
 		// Constrain the position
-		Constrain();
+		//Constrain();
 		// Update the target
 		target = position + viewVector;
 	}
@@ -505,11 +505,11 @@ void CPlayerInfo::Update(double dt)
 	{
 		Reset();
 	}
-	else
-	{
-		UpdateJumpUpwards(dt);
-		UpdateFreeFall(dt);
-	}
+	//else
+	//{
+	//	UpdateJumpUpwards(dt);
+	//	UpdateFreeFall(dt);
+	//}
 
 	// If a camera is attached to this playerInfo class, then update it
 	if (attachedCamera)
@@ -563,4 +563,9 @@ void CPlayerInfo::AttachCamera(FPSCamera* _cameraPtr)
 void CPlayerInfo::DetachCamera()
 {
 	attachedCamera = nullptr;
+}
+
+CWeaponInfo* CPlayerInfo::Getweapon()
+{
+	return primaryWeapon;
 }

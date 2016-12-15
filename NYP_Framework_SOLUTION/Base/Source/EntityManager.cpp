@@ -80,6 +80,21 @@ void EntityManager::RenderUI()
 	}
 }
 
+void EntityManager::RenderText()
+{
+	
+	std::list<EntityBase*>::iterator it, end;
+	end = entityList.end();
+	for (it = entityList.begin(); it != end; ++it)
+	{
+		(*it)->RenderText();
+	}
+}
+
+
+
+
+
 // Add an entity to this EntityManager
 void EntityManager::AddEntity(EntityBase* _newEntity, bool bAddToSpatialPartition)
 {

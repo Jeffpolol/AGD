@@ -5,7 +5,7 @@
 #include "RenderHelper.h"
 
 SkyBoxEntity::SkyBoxEntity(void)
-	: size(1000.0f, 1000.0f, 1000.0f)
+	: size(6000.0f, 6000.0f, 6000.0f)
 	, m_bBoundaryDefined(false)
 {
 }
@@ -23,7 +23,7 @@ void SkyBoxEntity::Render()
 {
 	MS& modelStack = GraphicsManager::GetInstance()->GetModelStack();
 	modelStack.PushMatrix();
-
+	//glDisable(GL_DEPTH_TEST);
 		// Front
 		modelStack.PushMatrix();
 		modelStack.Translate(0, 0, -size.z / 2);
@@ -72,8 +72,9 @@ void SkyBoxEntity::Render()
 		modelStack.Scale(size.x, size.y, size.z);
 			RenderHelper::RenderMesh(modelMesh[BOTTOM]);
 		modelStack.PopMatrix();
-
+	//glEnable(GL_DEPTH_TEST);
 	modelStack.PopMatrix();
+
 }
 
 // Set a mesh to this class

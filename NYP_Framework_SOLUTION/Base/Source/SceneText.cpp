@@ -14,7 +14,9 @@
 #include "ShaderProgram.h"
 #include "EntityManager.h"
 
+
 #include "Ball.h"
+#include "WeaponEntity.h"
 #include "Explosion.h"
 #include "Asteroid.h"
 #include "GenericEntity.h"
@@ -159,18 +161,18 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("arm")->textureID = LoadTGA("Image//arm.tga");
 
 
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_LEFT", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_RIGHT", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_TOP", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BOTTOM", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_FRONT")->textureID = LoadTGA("Image//SkyBox//skybox_front.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_BACK")->textureID = LoadTGA("Image//SkyBox//skybox_back.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_LEFT")->textureID = LoadTGA("Image//SkyBox//skybox_left.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_RIGHT")->textureID = LoadTGA("Image//SkyBox//skybox_right.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//skybox_top.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_bottom.tga");
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_LEFT", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_RIGHT", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_TOP", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BOTTOM", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_FRONT")->textureID = LoadTGA("Image//SkyBox//skybox_front.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BACK")->textureID = LoadTGA("Image//SkyBox//skybox_back.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_LEFT")->textureID = LoadTGA("Image//SkyBox//skybox_left.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_RIGHT")->textureID = LoadTGA("Image//SkyBox//skybox_right.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//skybox_top.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_down.tga");
 
 
 	MeshBuilder::GetInstance()->GenerateOBJ("ballHigh", "OBJ//ball_body1.obj");
@@ -230,6 +232,10 @@ void SceneText::Init()
 	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 
 
+
+	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
+		"SKYBOX_LEFT", "SKYBOX_RIGHT",
+		"SKYBOX_TOP", "SKYBOX_BOTTOM");
 	//Explosion* ex = Create::explosion("explosion", Vector3(0,0,0));
 	//aCube->SetCollider(true);
 
@@ -281,35 +287,37 @@ void SceneText::Init()
 	// Create a CEnemy instance
 	theEnemy = new CEnemy();
 	theEnemy->Init();
+	
 
-	groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
-	Create::Text2DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));	
-	Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
-	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
-
-
-	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
-											 "SKYBOX_LEFT", "SKYBOX_RIGHT",
-											 "SKYBOX_TOP", "SKYBOX_BOTTOM");
-
-	// Customise the ground entity
-	groundEntity->SetPosition(Vector3(0, -10, 0));
-	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
-	groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
-	groundEntity->SetIsBall(false);
-	playerInfo->SetTerrain(groundEntity);
-	theEnemy->SetTerrain(groundEntity);
-
-	// Setup the 2D entities
+	//groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
 	for (int i = 0; i < 3; ++i)
 	{
-		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
+		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	}
 	textObj[0]->SetText("HELLO WORLD");
+
+	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "[", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
+	//Create::Text2DObject("text", Vector3(0.0f, 0.0f, -1.5f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(1.f, 0, 0));	
+	
+	//Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
+	Create::weapon("arm",playerInfo->Getweapon());
+
+	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
+
+
+	// Customise the ground entity
+	//groundEntity->SetPosition(Vector3(0, -10, 0));
+	//groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
+	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
+	//playerInfo->SetTerrain(groundEntity);
+	//theEnemy->SetTerrain(groundEntity);
+
+	// Setup the 2D entities
+
 }
 void SceneText::GenerateRobots()
 {
@@ -459,6 +467,13 @@ void SceneText::Update(double dt)
 	ss1.precision(4);
 	ss1 << "Player:" << playerInfo->GetPos();
 	textObj[2]->SetText(ss1.str());
+
+	std::ostringstream ss2;
+	int ammo = playerInfo->Getweapon()->GetMagRound();
+	ss2.precision(6);
+	ss2<<ammo;
+	ammotxt->SetText(ss2.str());
+
 }
 
 void SceneText::Render()
@@ -472,16 +487,16 @@ void SceneText::Render()
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 	EntityManager::GetInstance()->Render();
 
-	// Setup 2D pipeline then render 2D
-	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
-	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
-	//GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
+
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
 
 
-
-
+		// Setup 2D pipeline then render 2D
+	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
+	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
+	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
+	EntityManager::GetInstance()->RenderText();
 
 }
 	

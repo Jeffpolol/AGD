@@ -141,6 +141,9 @@
     <ClCompile Include="Source\Explosion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\WeaponEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -228,6 +231,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Explosion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\EntityBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WeaponEntity.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
