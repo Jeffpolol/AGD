@@ -12,8 +12,8 @@
 #include "SceneManager.h"
 #include "GraphicsManager.h"
 #include "ShaderProgram.h"
-#include "EntityManager.h"
-#include "Ball.h"
+
+
 #include "WeaponEntity.h"
 #include "Explosion.h"
 #include "Asteroid.h"
@@ -25,7 +25,7 @@
 #include "SkyBox/SkyBoxEntity.h"
 #include "SceneGraph\SceneGraph.h"
 #include "SpatialPartition\SpatialPartition.h"
-
+#include "Ball.h"
 #include <iostream>
 using namespace std;
 
@@ -144,8 +144,7 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateCube("cubeSG", Color(1.0f, 0.64f, 0.0f), 1.0f);
 
 	MeshBuilder::GetInstance()->GenerateSphere("explosion", Color(1, 1,1), 10, 28, 0.5f);
-	MeshBuilder::GetInstance()->GenerateOBJ("asteroid", "OBJ//asteroid_3.obj");
-	MeshBuilder::GetInstance()->GetMesh("asteroid")->textureID = LoadTGA("Image//noise.tga");
+	
 
 	MeshBuilder::GetInstance()->GenerateOBJ("arm", "OBJ//arm.obj");
 	MeshBuilder::GetInstance()->GetMesh("arm")->textureID = LoadTGA("Image//arm.tga");
@@ -201,6 +200,14 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("ballgunLow")->textureID = LoadTGA("Image//ball.tga");
 
 
+	MeshBuilder::GetInstance()->GenerateOBJ("asteroidHigh", "OBJ//asteroid_1.obj");
+	MeshBuilder::GetInstance()->GetMesh("asteroidHigh")->textureID = LoadTGA("Image//noise.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("asteroidMid", "OBJ//asteroid_2.obj");
+	MeshBuilder::GetInstance()->GetMesh("asteroidMid")->textureID = LoadTGA("Image//noise.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("asteroidLow", "OBJ//asteroid_3.obj");
+	MeshBuilder::GetInstance()->GetMesh("asteroidLow")->textureID = LoadTGA("Image//noise.tga");
 	// Create the playerinfo instance, which manages all information about the player
 	playerInfo = CPlayerInfo::GetInstance();
 	playerInfo->Init();
@@ -215,75 +222,25 @@ void SceneText::Init()
 	CSpatialPartition::GetInstance()->Init(100, 100, 10, 10);
 	CSpatialPartition::GetInstance()->SetMesh("GRIDMESH");
 	CSpatialPartition::GetInstance()->SetCamera(&camera);
-	CSpatialPartition::GetInstance()->SetLevelOfDetails(40000.0f, 160000.0f);
+	CSpatialPartition::GetInstance()->SetLevelOfDetails(4000.0f, 16000.0f);
 	EntityManager::GetInstance()->SetSpatialPartition(CSpatialPartition::GetInstance());
 
 	// Create entities into the sceneVector3(Math::RandFloatMinMax(-10, 10), Math::RandFloatMinMax(-10, 10) , Math::RandFloatMinMax(-10, 10))
 
 	GenerateAsteroids();
-	GenerateRobots();
+	//GenerateRobots();
+
+
 	//ast->InitLOD("asteroid", "sphere", "cubeSG");
 	
 	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
-	//Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z), EntityBase::GO_DEFAULT); // Lightball
-
+	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 
 
 
 	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
 		"SKYBOX_LEFT", "SKYBOX_RIGHT",
 		"SKYBOX_TOP", "SKYBOX_BOTTOM");
-
-	/*GenericEntity* player = Create::Entity("quad", playerInfo->GetPos() );
-	player->SetAABB(Vector3(2,2,2),Vector3(-2,-2,-2));
-	player->SetCollider(true);
-	player->SetIsBall(true);
-	playerInfo->setPlayer(player);*/
-
-	//Explosion* ex = Create::explosion("explosion", Vector3(0,0,0));
-	//aCube->SetCollider(true);
-
-	/*GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
-	aCube->SetCollider(true);
-	aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
-	aCube->InitLOD("cube", "sphere", "cubeSG");*/
-
-	//// Add the pointer to this new entity to the Scene Graph
-	//CSceneNode* theNode = CSceneGraph::GetInstance()->AddNode(aCube);
-	//if (theNode == NULL)
-	//{
-	//	cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
-	//}
-
-	//GenericEntity* anotherCube = Create::Entity("cube", Vector3(-20.0f, 1.1f, -20.0f));
-	//anotherCube->SetCollider(true);
-	//anotherCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
-
-
-	//CSceneNode* anotherNode = theNode->AddChild(anotherCube);
-	//if (anotherNode == NULL)
-	//{
-	//	cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
-	//}
-	//
-	/*GenericEntity* baseCube = Create::Asset("cube", Vector3(0.0f, 0.0f, 0.0f));
-	CSceneNode* baseNode = CSceneGraph::GetInstance()->AddNode(baseCube);
-
-	CUpdateTransformation* baseMtx = new CUpdateTransformation();
-	baseMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
-	baseMtx->SetSteps(-60, 60);
-	baseNode->SetUpdateTransformation(baseMtx);
-
-	GenericEntity* childCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
-	CSceneNode* childNode = baseNode->AddChild(childCube);
-	childNode->ApplyTranslate(0.0f, 1.0f, 0.0f);
-
-	GenericEntity* grandchildCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
-	CSceneNode* grandchildNode = childNode->AddChild(grandchildCube);
-	grandchildNode->ApplyTranslate(0.0f, 0.0f, 1.0f);
-	CUpdateTransformation* aRotateMtx = new CUpdateTransformation();
-	aRotateMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
-	aRotateMtx->SetSteps(-120, 60);*/
  	
 	// Create a CEnemy instance
 	theEnemy = new CEnemy();
@@ -300,13 +257,12 @@ void SceneText::Init()
 	}
 	textObj[0]->SetText("HELLO WORLD");
 
-
-//	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
-	//ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
+	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
+	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
 	//Create::Text2DObject("text", Vector3(0.0f, 0.0f, -1.5f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(1.f, 0, 0));	
 	
 	//Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
-	//Create::weapon("arm",playerInfo->Getweapon());
+	Create::weapon("arm",playerInfo->Getweapon());
 	
 
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
@@ -318,86 +274,19 @@ void SceneText::Init()
 	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 	//playerInfo->SetTerrain(groundEntity);
 	//theEnemy->SetTerrain(groundEntity);
-
+	for (int a = 0; a < 6; a++)
+	{
+		Ball* ball = new Ball(Vector3(0 + (a * 10), 0, 0));
+	}
 	// Setup the 2D entities
 
 
+	music = new Musics();
+	music->playMusic("Sound//background_music.wav");
 }
 void SceneText::GenerateRobots()
 {
-	for (int i = 0; i < 1; i++)
-	{
-
-		//Vector3 position(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));
-		//Vector3 vel(Math::RandFloatMinMax(-10.f, 10.f), Math::RandFloatMinMax(0.f, 0.f), Math::RandFloatMinMax(-10.f, 10.f));
-		//Vector3 vel(0.1f, 0.1f, 0.1f);
-		Vector3 position(0 + (i * 5), 0, 0);
-		Vector3 vel(0, 0, 0);
-		Ball* ballRobot = Create::ball("ballHigh", Vector3(0, 0, 0), vel, Vector3(1, 1, 1), 1);
-	//	ballRobot->SetCollider(false);
-		ballRobot->SetAABB(
-			Vector3(ballRobot->GetScale().x * 2, ballRobot->GetScale().y * 2, ballRobot->GetScale().z * 2),
-			Vector3(-(ballRobot->GetScale().x * 2), -(ballRobot->GetScale().y * 2), -(ballRobot->GetScale().z * 2)));
-		//CSceneNode* ballNode = CSceneGraph::GetInstance()->AddNode(ballRobot);
-		//ballNode->ApplyTranslate(position.x, position.y, position.z);
-		ballRobot->SetPosition(position);
-		ballRobot->InitLOD("ballHigh", "ballMid", "ballLow");
-		CSceneNode* ballNode = CSceneGraph::GetInstance()->AddNode(ballRobot);
-		ballRobot->setBallNode(ballNode);
-		ballRobot->getBallNode()->ApplyTranslate(position.x, position.y, position.z);
-
-
-
-		Ball* ballgunRobot = Create::ball("ballgunHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), 1);
-		ballgunRobot->SetCollider(false);
-		ballgunRobot->SetAABB(
-			Vector3(ballgunRobot->GetScale().x * 2, ballgunRobot->GetScale().y * 2, ballgunRobot->GetScale().z * 2),
-			Vector3(-(ballgunRobot->GetScale().x * 2), -(ballgunRobot->GetScale().y * 2), -(ballgunRobot->GetScale().z * 2)));
-		ballgunRobot->InitLOD("ballgunHigh", "ballgunMid", "ballgunLow");
-		CSceneNode* grandchildNode = ballRobot->getBallNode()->AddChild(ballgunRobot);
-		ballgunRobot->setBallNode(grandchildNode);
-		//ballgunRobot->SetPosition(Vector3(-1.5f + position.x, 0 + position.y, 0 + position.z));
-		ballgunRobot->getBallNode()->ApplyTranslate(position.x, 1.8 + position.y, 2 + position.z);
-
-		Ball* ballarmRobot = Create::ball("ballarmHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), 1);
-		ballarmRobot->SetCollider(false);
-		ballarmRobot->SetAABB(
-			Vector3(ballarmRobot->GetScale().x * 2, ballarmRobot->GetScale().y * 2, ballarmRobot->GetScale().z * 2),
-			Vector3(-(ballarmRobot->GetScale().x * 2), -(ballarmRobot->GetScale().y * 2), -(ballarmRobot->GetScale().z * 2)));
-		ballarmRobot->InitLOD("ballarmHigh", "ballarmMid", "ballarmLow");
-
-		CUpdateTransformation* baseMtx = new CUpdateTransformation();
-		CSceneNode* childNode = ballRobot->getBallNode()->AddChild(ballarmRobot);
-		ballarmRobot->setBallNode(childNode);
-
-		//	ballarmRobot->SetPosition(Vector3(1.5f + position.x, 0 + position.y, 0 + position.z));
-		ballarmRobot->getBallNode()->ApplyTranslate(1. + position.x, -0.2f + position.y, 1.6 + position.z);
-			baseMtx->ApplyUpdate(1.0f, 1.0f, 0.0f, 0.0f);
-			baseMtx->SetSteps(-10, 10);
-			ballarmRobot->getBallNode()->SetUpdateTransformation(baseMtx);
-
-
-
-		Ball* ballarmRobot2 = Create::ball("ballarmHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), 1);
-		ballarmRobot2->SetCollider(false);
-		ballarmRobot2->SetAABB(
-			Vector3(ballarmRobot2->GetScale().x * 2, ballarmRobot2->GetScale().y * 2, ballarmRobot2->GetScale().z * 2),
-			Vector3(-(ballarmRobot2->GetScale().x * 2), -(ballarmRobot2->GetScale().y * 2), -(ballarmRobot2->GetScale().z * 2)));
-		ballarmRobot2->InitLOD("ballarmHigh", "ballarmMid", "ballarmLow");
-
-		CSceneNode* childNode2 = childNode->AddChild(ballarmRobot2);
-
-		//CUpdateTransformation* baseMtx = new CUpdateTransformation();
-		//CSceneNode* childNode = ballRobot->getBallNode()->AddChild(ballarmRobot);
-		ballarmRobot2->setBallNode(childNode2);
-
-		//	ballarmRobot->SetPosition(Vector3(1.5f + position.x, 0 + position.y, 0 + position.z));
-		ballarmRobot2->getBallNode()->ApplyTranslate(-2 + position.x,  position.y,   position.z);
-	/*	baseMtx->ApplyUpdate(1.0f, 1.0f, 0.0f, 0.0f);
-		baseMtx->SetSteps(-10, 10);
-		ballarmRobot->getBallNode()->SetUpdateTransformation(baseMtx);*/
-		
-	}
+	Ball* ball = new Ball(2);
 }
 
 void SceneText::Update(double dt)
@@ -428,6 +317,43 @@ void SceneText::Update(double dt)
 		lights[0]->type = Light::LIGHT_SPOT;
 	}
 
+	if (EntityManager::GetInstance()->exploded == true)
+	{
+			music->playSFX("Sound//xplode.mp3", false, false, 2);
+			EntityManager::GetInstance()->exploded = false;
+	}
+	
+	static bool soundPlaying = false;
+	if (KeyboardController::GetInstance()->IsKeyDown('W') || KeyboardController::GetInstance()->IsKeyDown('S') || KeyboardController::GetInstance()->IsKeyDown('A') || KeyboardController::GetInstance()->IsKeyDown('D'))
+	{
+		if (soundPlaying == false)
+		{
+			music->playSFX("Sound//Thrust.wav", false,true,1);
+			soundPlaying = true;
+		}
+		
+	}
+	else if (KeyboardController::GetInstance()->IsKeyReleased('W') || KeyboardController::GetInstance()->IsKeyReleased('S') || KeyboardController::GetInstance()->IsKeyReleased('A') || KeyboardController::GetInstance()->IsKeyReleased('D'))
+	{
+		if (music->getSFXEngine(1) != NULL)
+		{
+			music->getSFXEngine(1)->stopAllSounds();
+			soundPlaying = false;
+		}
+	}
+	static bool reloadOnce = false;
+	if (reloadOnce == false)
+	{
+		if (playerInfo->Getweapon()->GetIsreload() == true)
+		{
+			music->playSFX("Sound//rload.mp3", false, true,1);
+			reloadOnce = true;
+		}
+	}
+	if (playerInfo->Getweapon()->GetIsreload() == false)
+	{
+		reloadOnce = false;
+	}
 	if(KeyboardController::GetInstance()->IsKeyDown('I'))
 		lights[0]->position.z -= (float)(10.f * dt);
 	if(KeyboardController::GetInstance()->IsKeyDown('K'))
@@ -451,11 +377,15 @@ void SceneText::Update(double dt)
 	{
 		CSpatialPartition::GetInstance()->PrintSelf();
 	}
-
+	static bool gunFiring = false;
 	// if the left mouse button was released
 	if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
 	{
-		cout << "Left Mouse Button was released!" << endl;
+	}
+	else if (MouseController::GetInstance()->IsButtonDown(MouseController::LMB))
+	{
+		if (playerInfo->Getweapon()->GetMagRound()>0)
+		music->playSFX("Sound//pew.mp3", false,false,1);
 	}
 	if (MouseController::GetInstance()->IsButtonReleased(MouseController::RMB))
 	{
@@ -484,7 +414,7 @@ void SceneText::Update(double dt)
 
 	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
-	/*std::ostringstream ss;
+	std::ostringstream ss;
 	ss.precision(5);
 	float fps = (float)(1.f / dt);
 	ss << "FPS: " << fps;
@@ -493,7 +423,6 @@ void SceneText::Update(double dt)
 	std::ostringstream ss1;
 	ss1.precision(4);
 	ss1 << "Player:" << playerInfo->GetPos();
-
 	textObj[2]->SetText(ss1.str());
 
 	std::ostringstream ss2;
@@ -506,8 +435,7 @@ void SceneText::Update(double dt)
 	int hp = playerInfo->GetHealth();
 	ss3.precision(2);
 	ss3 << hp << "%";
-	hptxt->SetText(ss3.str());*/
-
+	hptxt->SetText(ss3.str());
 
 }
 
@@ -531,7 +459,7 @@ void SceneText::Render()
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
 	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
 	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
-	//EntityManager::GetInstance()->RenderText();
+	EntityManager::GetInstance()->RenderText();
 
 }
 	
@@ -542,11 +470,12 @@ void SceneText::GenerateAsteroids()
 		float scale = Math::RandFloatMinMax(1, 8);
 		Vector3 position(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));
 		Vector3 vel(Math::RandFloatMinMax(-100.f, 100.f), Math::RandFloatMinMax(-30.f, 30.f), Math::RandFloatMinMax(-90.f, 80.f));
-		Asteroid* ast = Create::asteroid("asteroid", position, vel, Vector3(scale, scale, scale),1);
-		ast->InitLOD("asteroid", "sphere", "cubeSG");
+		Asteroid* ast = Create::asteroid("asteroidHigh", position, vel, Vector3(scale, scale, scale), 1);
+		ast->InitLOD("asteroidHigh", "asteroidMid", "asteroidLow");
+		//ast->SetLODStatus(true);
 		ast->SetCollider(true);
 		float hsize = scale * 2;
-	ast->SetAABB(Vector3(hsize, hsize, hsize), Vector3(-hsize, -hsize, -hsize));
+		ast->SetAABB(Vector3(hsize, hsize, hsize), Vector3(-hsize, -hsize, -hsize));
 	}
 }
 void SceneText::Exit()

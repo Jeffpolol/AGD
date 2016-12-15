@@ -5,7 +5,7 @@
 #include <list>
 #include "Vector3.h"
 #include "SpatialPartition\SpatialPartition.h"
-
+#include "Musics.h"
 class EntityBase;
 
 class EntityManager : public Singleton<EntityManager>
@@ -22,7 +22,7 @@ public:
 	bool MarkForDeletion(EntityBase* _existingEntity);
 
 	void SetSpatialPartition(CSpatialPartition* theSpatialPartition);
-
+	bool exploded;
 private:
 	EntityManager();
 	virtual ~EntityManager();
@@ -48,6 +48,7 @@ private:
 	
 	// Handler to Spatial Partition
 	CSpatialPartition* theSpatialPartition;
+
 };
 
 #endif // ENTITY_MANAGER_H

@@ -6,7 +6,6 @@
 class EntityBase
 {
 public:
-
 	EntityBase();
 	virtual ~EntityBase();
 
@@ -21,10 +20,8 @@ public:
 	inline void SetScale(const Vector3& _value){ scale = _value; };
 	inline Vector3 GetScale(){ return scale; };
 
-
-	inline void SetIsBall(const bool ball){ this->isBall = ball; }
+	inline void SetBall(bool ball){ this->isBall = ball; }
 	inline bool GetBall(){ return isBall; }
-
 	bool IsDone();
 	void SetIsDone(const bool _value);
 

@@ -128,7 +128,9 @@ void CSpatialPartition::Update(void)
 							i, j) == true)
 			{
 				// Calculate LOD for this CGrid
+				
 				float distance = CalculateDistanceSquare(&(theCamera->GetCameraPos()), i, j);
+				//std::cout << "Distance: " <<distance << std::endl;
 				if (distance < LevelOfDetails_Distances[0])
 				{
 					theGrid[i*zNumOfGrid + j].SetDetailLevel(CLevelOfDetails::HIGH_DETAILS);

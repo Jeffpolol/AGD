@@ -11,7 +11,7 @@
 #include "GenericEntity.h"
 #include "SceneGraph/UpdateTransformation.h"
 #include "Enemy\Enemy.h"
-
+#include "EntityManager.h"
 class ShaderProgram;
 class SceneManager;
 class TextEntity;
@@ -37,12 +37,17 @@ private:
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;
 	FPSCamera camera;
+
 	TextEntity* textObj[3];
+	TextEntity* ammotxt;
+	TextEntity* hptxt;
+
 	Light* lights[2];
 
 	GenericEntity* theCube;
 	CEnemy* theEnemy;
 
+	Musics* music;
 	static SceneText* sInstance; // The pointer to the object that gets registered
 };
 

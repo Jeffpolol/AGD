@@ -32,6 +32,7 @@ void GenericEntity::Render()
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
 	modelStack.Scale(scale.x, scale.y, scale.z);
+	//std::cout << "LOD: " << GetLODStatus() << std::endl;
 	if (GetLODStatus()==true)
 	{
 		if (theDetailLevel != NO_DETAILS)
@@ -61,6 +62,7 @@ GenericEntity* Create::Entity(	const std::string& _meshName,
 	result->SetPosition(_position);
 	result->SetScale(_scale);
 	result->SetCollider(false);
+	result->SetBall(false);
 	EntityManager::GetInstance()->AddEntity(result, true);
 	return result;
 }

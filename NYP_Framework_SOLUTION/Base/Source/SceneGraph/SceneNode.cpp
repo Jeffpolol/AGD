@@ -379,7 +379,6 @@ void CSceneNode::Render(void)
 
 
 			// Render the entity
-		//	if (theEntity->getac)
 			theEntity->Render();
 		}
 
@@ -387,7 +386,6 @@ void CSceneNode::Render(void)
 		std::vector<CSceneNode*>::iterator it;
 		for (it = theChildren.begin(); it != theChildren.end(); ++it)
 		{
-		
 			(*it)->Render();
 		}
 

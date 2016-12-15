@@ -4,12 +4,20 @@
 #include "EntityManager.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
-
+#include "SceneGraph\SceneGraph.h"
 Ball::Ball(void)
 	: modelMesh(NULL)
 	, m_bStatus(false)
 	, m_vel(0, 0, 0)
 	, m_speed(10.0f)
+	, ballArm1(NULL)
+	, ballArm2(NULL)
+	, ballGun(NULL)
+	, ballHead(NULL)
+	, HeadNode(NULL)
+	, Arm1Node(NULL)
+	, Arm2Node(NULL)
+	, GunNode(NULL)
 
 {
 }
@@ -22,20 +30,82 @@ Ball::Ball(Mesh* _modelMesh)
 
 {
 }
+Ball::Ball(Vector3 position)
+{
+	
+		Vector3 vel(0, 0, 0);
 
+		ballHead = Create::Entity("ballHigh", position, Vector3(1, 1, 1));
+		ballHead->SetCollider(true);
+		ballHead->SetBall(true);
+		ballHead->SetAABB(
+			Vector3(1, 1, 1),
+			Vector3(-1, -1, -1));
+
+		//Animation/Translate for Head
+		HeadNode = CSceneGraph::GetInstance()->AddNode(ballHead);
+		HeadNode->ApplyTranslate(position.x, position.y, position.z);
+		ballHead->SetPosition(position);
+		ballHead->InitLOD("ballHigh", "ballMid", "ballLow");
+		//Set Entity and Node to the class entity and Node
+
+
+		ballGun = Create::Entity("ballgunHigh", position, Vector3(1, 1, 1));
+		ballGun->SetCollider(true);
+		ballGun->SetBall(true);
+		ballGun->SetAABB(
+			Vector3(1, 1, 1),
+			Vector3(-1, -1, -1));
+		ballGun->InitLOD("ballgunHigh", "ballgunMid", "ballgunLow");
+		GunNode = HeadNode->AddChild(ballGun);
+		GunNode->ApplyTranslate(0, 1.8, 2 );
+		
+
+		ballArm1 = Create::Entity("ballarmHigh", position, Vector3(1, 1, 1));
+		ballArm1->SetCollider(true);
+		ballArm1->SetBall(true);
+		ballArm1->SetAABB(
+			Vector3(1, 1, 1),
+			Vector3(-1, -1, -1));
+		ballArm1->InitLOD("ballarmHigh", "ballarmMid", "ballarmLow");
+
+		//For Animation
+		CUpdateTransformation* baseMtx = new CUpdateTransformation();
+		Arm1Node = HeadNode->AddChild(ballArm1);
+		Arm1Node->ApplyTranslate(1. , -0.2f , 1.6 );
+		baseMtx->ApplyUpdate(1.0f, 1.0f, 0.0f, 0.0f);
+		baseMtx->SetSteps(-10, 10);
+		Arm1Node->SetUpdateTransformation(baseMtx);
+
+		
+
+
+		CUpdateTransformation* baseMtx2 = new CUpdateTransformation();
+
+		ballArm2 = Create::Entity("ballarmHigh", position, Vector3(1, 1, 1));
+		ballArm2->SetCollider(true);
+		ballArm2->SetBall(true);
+		ballArm2->SetAABB(
+			Vector3(1, 1, 1),
+			Vector3(-1, -1, -1));
+		ballArm2->InitLOD("ballarmHigh", "ballarmMid", "ballarmLow");
+
+		Arm2Node = HeadNode->AddChild(ballArm2);
+		Arm2Node->ApplyTranslate(-1 , -0.2f , 1.6);
+		baseMtx2->ApplyUpdate(1.0f, 1.0f, 0.0f, 0.0f);
+		baseMtx2->SetSteps(-10, 10);
+		Arm2Node->SetUpdateTransformation(baseMtx2);
+
+	
+}
 Ball::~Ball(void)
 {
 	modelMesh = NULL;
 
 }
-CSceneNode* Ball::getBallNode()
-{
-	return ballNode;
-}
-void  Ball::setBallNode(CSceneNode* ball)
-{
-	this->ballNode = ball;
-}
+
+
+
 // Activate the projectile. true == active, false == inactive
 void Ball::SetStatus(const bool m_bStatus)
 {
@@ -75,11 +145,15 @@ void Ball::Update(double dt)
 	//SetStatus(false);
 	//SetIsDone(true);	// This method is to inform the EntityManager that it should remove this instance
 	// Update Position
+	//std::cout << "Ball Active: " << this->isDone << std::endl;
 	if (m_vel != Vector3(0, 0, 0))
 	{
-		
 		m_vel.Normalize();
-		ballNode->ApplyTranslate((position.x + m_vel.x)*dt, (position.y + m_vel.y)*dt, (position.z + m_vel.z)*dt);
+		HeadNode->ApplyTranslate((position.x + m_vel.x)*dt, (position.y + m_vel.y)*dt, (position.z + m_vel.z)*dt);
+		ballHead->GetPosition().Set((position.x + m_vel.x)*dt, (position.y + m_vel.y)*dt, (position.z + m_vel.z)*dt);
+		ballArm1->GetPosition().Set((position.x + m_vel.x)*dt, (position.y + m_vel.y)*dt, (position.z + m_vel.z)*dt);
+		ballArm2->GetPosition().Set((position.x + m_vel.x)*dt, (position.y + m_vel.y)*dt, (position.z + m_vel.z)*dt);
+		ballGun->GetPosition().Set((position.x + m_vel.x)*dt, (position.y + m_vel.y)*dt, (position.z + m_vel.z)*dt);
 	}
 }
 
@@ -104,7 +178,75 @@ void Ball::Render(void)
 		RenderHelper::RenderMesh(modelMesh);
 	modelStack.PopMatrix();
 }
+void Ball::setBallHead(GenericEntity* ballHead)
+{
+	this->ballHead = ballHead;
+}
+GenericEntity* Ball::getBallHead()
+{
+	return ballHead;
+}
 
+void Ball::setBallArm1(GenericEntity* ballArm)
+{
+	this->ballArm1 = ballArm;
+}
+GenericEntity* Ball::getBallArm()
+{
+	return ballArm1;
+}
+
+void Ball::setBallArm2(GenericEntity* ballArm)
+{
+	this->ballArm2 = ballArm;
+}
+GenericEntity* Ball::getBallArm2()
+{
+	return ballArm2;
+}
+
+void Ball::setBallGun(GenericEntity* ballGun)
+{
+	this->ballGun = ballGun;
+}
+GenericEntity* Ball::getBallGun()
+{
+	return ballGun;
+}
+//
+//
+//void Ball::setHeadNode(CSceneNode* node)
+//{
+//	this->HeadNode = node;
+//}
+//CSceneNode* Ball::getHeadNode()
+//{
+//	return HeadNode;
+//}
+//
+//void Ball::setArm1Node(CSceneNode* node)
+//{
+//	this->Arm1Node = node;
+//}
+//CSceneNode* Ball::getArm1Node()
+//{
+//	return Arm1Node;
+//}
+//
+//void Ball::setArm2Node(CSceneNode* node)
+//{
+//	this->Arm2Node = node;
+//}
+//CSceneNode* Ball::getArm2Node()
+//{
+//	return Arm2Node;
+//}
+//
+//void Ball::setGunNode(CSceneNode* node)
+//{
+//
+//}
+//CSceneNode* getGunNode();
 // Create a projectile and add it into EntityManager
 Ball* Create::ball(const std::string& _meshName,
 	const Vector3& _position,
@@ -123,7 +265,12 @@ Ball* Create::ball(const std::string& _meshName,
 	result->SetSpeed(m_fSpeed);
 	result->SetStatus(true);
 	result->SetCollider(true);
-	result->SetIsBall(true);
+	result->SetBall(true);
+
+	
+	
+
 	EntityManager::GetInstance()->AddEntity(result,true);
 	return result;
 }
+

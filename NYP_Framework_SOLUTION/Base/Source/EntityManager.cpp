@@ -4,10 +4,9 @@
 #include "Projectile/Laser.h"
 #include "SceneGraph\SceneGraph.h"
 #include "Explosion.h"
-
+#include "Ball.h"
 #include <iostream>
 using namespace std;
-
 // Update all entities
 void EntityManager::Update(double _dt)
 {
@@ -55,6 +54,7 @@ void EntityManager::Render()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
+		if ((*it)->GetBall()==false)
 		(*it)->Render();
 	}
 
@@ -62,8 +62,8 @@ void EntityManager::Render()
 	CSceneGraph::GetInstance()->Render();
 
 	// Render the Spatial Partition
-	if (theSpatialPartition)
-		theSpatialPartition->Render();
+	//if (theSpatialPartition)
+	//	theSpatialPartition->Render();
 }
 
 // Render the UI entities
@@ -158,6 +158,7 @@ void EntityManager::SetSpatialPartition(CSpatialPartition* theSpatialPartition)
 // Constructor
 EntityManager::EntityManager()
 	: theSpatialPartition(NULL)
+
 {
 }
 
@@ -377,19 +378,24 @@ bool EntityManager::CheckForCollision(void)
 												thatMinAABB, thatMaxAABB,
 												hitPosition) == true)
 					{
-						(*colliderThis)->SetIsDone(true);
-						(*colliderThat)->SetIsDone(true);
 
 						GenericEntity *entity = dynamic_cast<GenericEntity*>(*colliderThat);
 						Explosion* ex = Create::explosion("explosion",entity->GetScale(), entity->GetPosition());
-
-					
-						// Remove from Scene Graph
+						exploded = true;
+						(*colliderThis)->SetIsDone(true);
+						(*colliderThat)->SetIsDone(true);
+						//std::cout << "HIT";
+						//// Remove from Scene Graph
+						//if (entity->GetBall() == true)
+						//{
+						//	Ball *entity = dynamic_cast<Ball*>(*colliderThis);
+						//	std::cout << "FUCK U";
+						//}
 						if (CSceneGraph::GetInstance()->DeleteNode((*colliderThis)) == true)
 						{
 							cout << "*** This Entity removed ***" << endl;
 						}
-						// Remove from Scene Graph
+						// Re move from Scene Graph
 						if (CSceneGraph::GetInstance()->DeleteNode((*colliderThat)) == true)
 						{
 							cout << "*** That Entity removed ***" << endl;
@@ -420,11 +426,13 @@ bool EntityManager::CheckForCollision(void)
 					{
 						if (CheckAABBCollision(thisEntity, thatEntity))
 						{
-							if (thisEntity->GetIsDestructible())
-							thisEntity->SetIsDone(true);
+							////if (thisEntity->GetIsDestructible())
+							//thisEntity->SetIsDone(true);
 
-							if (thatEntity->GetIsDestructible())
-							thatEntity->SetIsDone(true);
+							////if (thatEntity->GetIsDestructible())
+							//thatEntity->SetIsDone(true);
+
+						//	std::cout << "HIT";
 						}
 					}
 				}

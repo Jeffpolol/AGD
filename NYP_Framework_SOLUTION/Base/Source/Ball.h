@@ -4,15 +4,20 @@
 #include "Collider/Collider.h"
 #include "LevelOfDetails\LevelOfDetails.h"
 #include "SceneGraph\SceneNode.h"
+#include "GenericEntity.h"
 class Mesh;
 //class CPlayerInfo;
 
 class Ball : public EntityBase, public CCollider, public CLevelOfDetails
 {
 public:
+
 	Ball(void);
 	Ball(Mesh* _modelMesh);
+	Ball(Vector3 Position);
 	~Ball();
+
+
 public:
 
 	void SetSpeed(const float sped);
@@ -26,8 +31,32 @@ public:
 
 	void SetVel(Vector3 newvel);
 
-	CSceneNode* getBallNode();
-	void  setBallNode(CSceneNode* ball);
+
+	void setBallHead(GenericEntity* ballHead);
+	GenericEntity* getBallHead();
+
+	void setBallArm1(GenericEntity* ballArm);
+	GenericEntity* getBallArm();
+	
+	void setBallArm2(GenericEntity* ballArm);
+	GenericEntity* getBallArm2();
+
+	void setBallGun(GenericEntity* ballGun);
+	GenericEntity* getBallGun();
+
+
+	//void setHeadNode(CSceneNode* node);
+	//CSceneNode* getHeadNode();
+
+	//void setArm1Node(CSceneNode* node);
+	//CSceneNode* getArm1Node();
+
+	//void setArm2Node(CSceneNode* node);
+	//CSceneNode* getArm2Node();
+
+	//void setGunNode(CSceneNode* node);
+	//CSceneNode* getGunNode();
+
 
 
 	// Update the status of this projectile
@@ -46,7 +75,20 @@ protected:
 	float m_speed;
 	// The direction of the projectile
 	Vector3 m_vel;
-	CSceneNode* ballNode;// = CSceneGraph::GetInstance()->AddNode(ballRobot);
+
+
+	CSceneNode* HeadNode;// = CSceneGraph::GetInstance()->AddNode(ballRobot);
+	CSceneNode* Arm1Node;
+	CSceneNode* Arm2Node;
+	CSceneNode* GunNode;
+
+	GenericEntity* ballHead;
+	GenericEntity* ballArm1;
+	GenericEntity* ballArm2;
+	GenericEntity* ballGun;
+
+
+
 };
 
 namespace Create

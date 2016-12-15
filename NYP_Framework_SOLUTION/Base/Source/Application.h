@@ -3,6 +3,7 @@
 
 #include "timer.h"
 
+
 struct GLFWwindow;
 
 class Application
@@ -24,8 +25,8 @@ public:
 	static void MouseScrollCallbacks(GLFWwindow* window, double xoffset, double yoffset);
 
 	int GetWindowHeight();
-	int GetWindowWidth();                                                  
-	
+	int GetWindowWidth();    
+
 private:
 	Application();
 	~Application();
@@ -36,6 +37,7 @@ private:
 	const static int m_window_width = 1080;
 	const static int m_window_height = 720;
 
+	
 	//Declare a window object
 	StopWatch m_timer;
 };

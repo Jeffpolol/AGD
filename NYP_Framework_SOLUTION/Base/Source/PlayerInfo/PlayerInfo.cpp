@@ -79,7 +79,7 @@ void CPlayerInfo::Init(void)
 	m_hitbox->SetCollider(true);
 	float s = 5;
 	m_hitbox->SetAABB(Vector3(s, s, s), Vector3(-s, -s, -s));
-	m_hitbox->SetDestructible(0);
+	//m_hitbox->SetDestructible(0);
 	
 }
 
@@ -443,6 +443,9 @@ void CPlayerInfo::Update(double dt)
 			//up = rightUV.Cross(viewUV).Normalized();
 		}
 		{
+			/*Vector3 tempView;
+			tempView.Set(viewUV.x, viewUV.y, viewUV.z);
+			std::cout << "tempView: " << tempView << std::endl;*/
 			float pitch = (float)(-m_dSpeed * camera_pitch * (float)dt);
 			rightUV = viewUV.Cross(up);
 			rightUV.y = 0;
@@ -450,8 +453,14 @@ void CPlayerInfo::Update(double dt)
 			//up = rightUV.Cross(viewUV).Normalized();
 			Mtx44 rotation;
 			rotation.SetToRotation(pitch, rightUV.x, rightUV.y, rightUV.z);
-			viewUV = rotation * viewUV;
-			target = position + viewUV;
+		
+		/*	if (viewUV.y <= 0.6f && viewUV.y >= -0.6f)
+			{*/
+				viewUV = rotation * viewUV;
+				target = position + viewUV;
+				//viewUV = tempView;
+			//}
+			
 		}
 
 

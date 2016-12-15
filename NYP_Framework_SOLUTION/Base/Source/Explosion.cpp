@@ -59,6 +59,7 @@ Explosion* Create::explosion(const std::string& _meshName, const Vector3& _scale
 	result->SetScale(Vector3(1,1,1));
 	result->SetMaxScale(_scale.x);
 	result->SetCollider(false);
+	result->SetBall(false);
 	EntityManager::GetInstance()->AddEntity(result, true);
 	return result;
 }
