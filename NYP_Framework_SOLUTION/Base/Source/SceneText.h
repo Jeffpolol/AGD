@@ -40,6 +40,7 @@ private:
 
 	TextEntity* textObj[3];
 	TextEntity* ammotxt;
+	TextEntity* hptxt;
 
 	Light* lights[2];
 

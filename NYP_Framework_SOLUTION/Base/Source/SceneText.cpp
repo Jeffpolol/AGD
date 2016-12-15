@@ -116,15 +116,7 @@ void SceneText::Init()
 	currProg->UpdateInt("numLights", 1);
 	currProg->UpdateInt("textEnabled", 0);
 	
-	// Create the playerinfo instance, which manages all information about the player
-	playerInfo = CPlayerInfo::GetInstance();
-	playerInfo->Init();
 
-	// Create and attach the camera to the scene
-	//camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
-	camera.Init(playerInfo->GetPos(), playerInfo->GetTarget(), playerInfo->GetUp());
-	playerInfo->AttachCamera(&camera);
-	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	// Load all the meshes
 	MeshBuilder::GetInstance()->GenerateAxes("reference");
@@ -152,7 +144,7 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateCube("cubeSG", Color(1.0f, 0.64f, 0.0f), 1.0f);
 
 	MeshBuilder::GetInstance()->GenerateSphere("explosion", Color(1, 1,1), 10, 28, 0.5f);
-	MeshBuilder::GetInstance()->GenerateOBJ("asteroid", "OBJ//asteroid OBJ.obj");
+	MeshBuilder::GetInstance()->GenerateOBJ("asteroid", "OBJ//asteroid_3.obj");
 	MeshBuilder::GetInstance()->GetMesh("asteroid")->textureID = LoadTGA("Image//noise.tga");
 
 	MeshBuilder::GetInstance()->GenerateOBJ("arm", "OBJ//arm.obj");
@@ -172,11 +164,20 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//skybox_top.tga");
 	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_down.tga");
 
-
-
-
 	MeshBuilder::GetInstance()->GenerateRay("laser", 30.0f);
 	MeshBuilder::GetInstance()->GenerateQuad("GRIDMESH", Color(1, 1, 1), 10.f);
+
+
+
+	// Create the playerinfo instance, which manages all information about the player
+	playerInfo = CPlayerInfo::GetInstance();
+	playerInfo->Init();
+
+	// Create and attach the camera to the scene
+	//camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(playerInfo->GetPos(), playerInfo->GetTarget(), playerInfo->GetUp());
+	playerInfo->AttachCamera(&camera);
+	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	// Set up the Spatial Partition and pass it to the EntityManager to manage
 	CSpatialPartition::GetInstance()->Init(100, 100, 10, 10);
@@ -259,11 +260,13 @@ void SceneText::Init()
 	}
 	textObj[0]->SetText("HELLO WORLD");
 
-	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "[", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
+	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
+	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
 	//Create::Text2DObject("text", Vector3(0.0f, 0.0f, -1.5f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(1.f, 0, 0));	
 	
 	//Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
 	Create::weapon("arm",playerInfo->Getweapon());
+	
 
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
 
@@ -376,9 +379,15 @@ void SceneText::Update(double dt)
 
 	std::ostringstream ss2;
 	int ammo = playerInfo->Getweapon()->GetMagRound();
-	ss2.precision(6);
+	ss2.precision(1);
 	ss2<<ammo;
 	ammotxt->SetText(ss2.str());
+
+	std::ostringstream ss3;
+	int hp = playerInfo->GetHealth();
+	ss3.precision(2);
+	ss3 << hp << "%";
+	hptxt->SetText(ss3.str());
 
 }
 

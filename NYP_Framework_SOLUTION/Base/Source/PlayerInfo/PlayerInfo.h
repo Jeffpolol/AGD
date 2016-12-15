@@ -3,6 +3,7 @@
 #include "../FPSCamera.h"
 #include "../GroundEntity.h"
 #include "../WeaponInfo/WeaponInfo.h"
+#include "../GenericEntity.h"
 
 class CPlayerInfo
 {
@@ -47,6 +48,7 @@ public:
 	// Reset this player instance to default
 	void Reset(void);
 
+	void SetHealth(int);
 	// Set position
 	void SetPos(const Vector3& pos);
 	// Set target
@@ -66,7 +68,7 @@ public:
 	// Set the terrain for the player info
 	void SetTerrain(GroundEntity* m_pTerrain);
 
-
+	int GetHealth();
 	CWeaponInfo* Getweapon();
 	// Get position
 	Vector3 GetPos(void) const;
@@ -102,10 +104,12 @@ public:
 	void FireWeapon();
 
 private:
+	int m_health;
 	Vector3 defaultPosition, defaultTarget, defaultUp;
 	Vector3 position, target, up;
 	Vector3 maxBoundary, minBoundary;
 	GroundEntity* m_pTerrain;
+	GenericEntity* m_hitbox;
 
 	double m_dSpeed;
 	double m_dAcceleration;

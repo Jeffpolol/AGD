@@ -420,7 +420,10 @@ bool EntityManager::CheckForCollision(void)
 					{
 						if (CheckAABBCollision(thisEntity, thatEntity))
 						{
+							if (thisEntity->GetIsDestructible())
 							thisEntity->SetIsDone(true);
+
+							if (thatEntity->GetIsDestructible())
 							thatEntity->SetIsDone(true);
 						}
 					}
