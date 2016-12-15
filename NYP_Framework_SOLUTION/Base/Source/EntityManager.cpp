@@ -353,7 +353,7 @@ bool EntityManager::CheckForCollision(void)
 				if ((*colliderThat)->HasCollider())
 				{
 					Vector3 hitPosition = Vector3(0, 0, 0);
-					
+
 					// Get the minAABB and maxAABB for (*colliderThat)
 					CCollider *thatCollider = dynamic_cast<CCollider*>(*colliderThat);
 					Vector3 thatMinAABB = (*colliderThat)->GetPosition() + thatCollider->GetMinAABB();
@@ -364,7 +364,6 @@ bool EntityManager::CheckForCollision(void)
 												thatMinAABB, thatMaxAABB,
 												hitPosition) == true)
 					{
-						//if (colliderThat)
 						(*colliderThis)->SetIsDone(true);
 						(*colliderThat)->SetIsDone(true);
 

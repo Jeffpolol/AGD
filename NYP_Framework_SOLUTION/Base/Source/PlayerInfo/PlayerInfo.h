@@ -4,6 +4,7 @@
 #include "../GroundEntity.h"
 #include "../WeaponInfo/WeaponInfo.h"
 #include "../GenericEntity.h"
+
 class CPlayerInfo
 {
 protected:
@@ -99,9 +100,6 @@ public:
 
 	void FireWeapon();
 
-	void setPlayer(GenericEntity* player);
-	GenericEntity* getPlayer();
-
 private:
 	Vector3 defaultPosition, defaultTarget, defaultUp;
 	Vector3 position, target, up;
@@ -122,8 +120,6 @@ private:
 
 	FPSCamera* attachedCamera;
 
-	
-	GenericEntity* player;
 	CWeaponInfo* primaryWeapon;
 	CWeaponInfo* secondaryWeapon;
 };

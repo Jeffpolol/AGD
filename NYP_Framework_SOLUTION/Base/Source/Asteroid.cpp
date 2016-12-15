@@ -65,7 +65,6 @@ Asteroid* Create::asteroid(const std::string& _meshName,
 	const Vector3& _position,
 	const Vector3& _direction,
 	const Vector3& _Scale,
-	const EntityBase::Entity_Type& type,
 	const float m_fSpeed)
 {
 	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);

@@ -6,17 +6,6 @@
 class EntityBase
 {
 public:
-
-	enum Entity_Type
-	{
-		GO_BALL,
-		GO_ASTEROID,
-		GO_BULLET,
-		GO_DEFAULT,
-		GO_PLAYER,
-		GO_UI,
-	};
-
 	EntityBase();
 	virtual ~EntityBase();
 
@@ -30,14 +19,6 @@ public:
 
 	inline void SetScale(const Vector3& _value){ scale = _value; };
 	inline Vector3 GetScale(){ return scale; };
-
-
-	inline void SetIsBall(const bool ball){ this->isBall = ball; }
-	inline bool GetBall(){ return isBall; }
-
-	inline void SetType(Entity_Type type){ this->type = type; }
-	inline Entity_Type GetType(){ return type; }
-
 
 	bool IsDone();
 	void SetIsDone(const bool _value);
@@ -55,7 +36,6 @@ protected:
 	Vector3 position;
 	Vector3 scale;
 
-	Entity_Type type;
 	bool isDone;
 	bool m_bCollider;
 	bool bLaser;

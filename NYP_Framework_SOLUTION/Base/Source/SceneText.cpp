@@ -116,15 +116,7 @@ void SceneText::Init()
 	currProg->UpdateInt("numLights", 1);
 	currProg->UpdateInt("textEnabled", 0);
 	
-	// Create the playerinfo instance, which manages all information about the player
-	playerInfo = CPlayerInfo::GetInstance();
-	playerInfo->Init();
 
-	// Create and attach the camera to the scene
-	//camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
-	camera.Init(playerInfo->GetPos(), playerInfo->GetTarget(), playerInfo->GetUp());
-	playerInfo->AttachCamera(&camera);
-	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	// Load all the meshes
 	MeshBuilder::GetInstance()->GenerateAxes("reference");
@@ -152,25 +144,25 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateCube("cubeSG", Color(1.0f, 0.64f, 0.0f), 1.0f);
 
 	MeshBuilder::GetInstance()->GenerateSphere("explosion", Color(1, 1,1), 10, 28, 0.5f);
-	MeshBuilder::GetInstance()->GenerateOBJ("asteroid", "OBJ//asteroid OBJ.obj");
+	MeshBuilder::GetInstance()->GenerateOBJ("asteroid", "OBJ//asteroid_3.obj");
 	MeshBuilder::GetInstance()->GetMesh("asteroid")->textureID = LoadTGA("Image//noise.tga");
 
 	MeshBuilder::GetInstance()->GenerateOBJ("arm", "OBJ//arm.obj");
 	MeshBuilder::GetInstance()->GetMesh("arm")->textureID = LoadTGA("Image//arm.tga");
 
 
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_LEFT", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_RIGHT", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_TOP", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BOTTOM", Color(1, 1, 1), 1.f);
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_FRONT")->textureID = LoadTGA("Image//SkyBox//skybox_front.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_BACK")->textureID = LoadTGA("Image//SkyBox//skybox_back.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_LEFT")->textureID = LoadTGA("Image//SkyBox//skybox_left.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_RIGHT")->textureID = LoadTGA("Image//SkyBox//skybox_right.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//skybox_top.tga");
-	//MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_bottom.tga");
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_FRONT", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BACK", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_LEFT", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_RIGHT", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_TOP", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GenerateQuad("SKYBOX_BOTTOM", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_FRONT")->textureID = LoadTGA("Image//SkyBox//skybox_front.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BACK")->textureID = LoadTGA("Image//SkyBox//skybox_back.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_LEFT")->textureID = LoadTGA("Image//SkyBox//skybox_left.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_RIGHT")->textureID = LoadTGA("Image//SkyBox//skybox_right.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//skybox_top.tga");
+	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_down.tga");
 
 
 	MeshBuilder::GetInstance()->GenerateOBJ("ballHigh", "OBJ//ball_body1.obj");
@@ -226,9 +218,8 @@ void SceneText::Init()
 	GenerateRobots();
 	//ast->InitLOD("asteroid", "sphere", "cubeSG");
 	
-	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f), EntityBase::GO_DEFAULT); // Reference
-	//Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z), EntityBase::GO_DEFAULT); // Lightball
-
+	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
+	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 
 	GenericEntity* player = Create::Entity("quad", playerInfo->GetPos() ,EntityBase::GO_PLAYER);
 	player->SetAABB(Vector3(2,2,2),Vector3(-2,-2,-2));
@@ -236,13 +227,19 @@ void SceneText::Init()
 	player->SetIsBall(true);
 	playerInfo->setPlayer(player);
 
+
+
+	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
+		"SKYBOX_LEFT", "SKYBOX_RIGHT",
+		"SKYBOX_TOP", "SKYBOX_BOTTOM");
+
 	//Explosion* ex = Create::explosion("explosion", Vector3(0,0,0));
 	//aCube->SetCollider(true);
 
-	/*GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
+	GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
 	aCube->SetCollider(true);
 	aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
-	aCube->InitLOD("cube", "sphere", "cubeSG");*/
+	aCube->InitLOD("cube", "sphere", "cubeSG");
 
 
 	
@@ -316,6 +313,15 @@ void SceneText::Init()
 		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
 	}
 	textObj[0]->SetText("HELLO WORLD");
+	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
+	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
+	//Create::Text2DObject("text", Vector3(0.0f, 0.0f, -1.5f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(1.f, 0, 0));	
+	
+	//Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
+	Create::weapon("arm",playerInfo->Getweapon());
+	
+
+	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
 }
 void SceneText::GenerateRobots()
 {
@@ -392,6 +398,29 @@ void SceneText::GenerateRobots()
 		ballarmRobot->getBallNode()->SetUpdateTransformation(baseMtx);*/
 		
 	}
+=======
+
+	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
+	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
+	//Create::Text2DObject("text", Vector3(0.0f, 0.0f, -1.5f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(1.f, 0, 0));	
+	
+	//Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
+	Create::weapon("arm",playerInfo->Getweapon());
+	
+
+	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
+
+
+	// Customise the ground entity
+	//groundEntity->SetPosition(Vector3(0, -10, 0));
+	//groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
+	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
+	//playerInfo->SetTerrain(groundEntity);
+	//theEnemy->SetTerrain(groundEntity);
+
+	// Setup the 2D entities
+
+>>>>>>> 1c616e21a889ef970aa98f5f7f2b2979a0305026
 }
 void SceneText::Update(double dt)
 {
@@ -477,7 +506,7 @@ void SceneText::Update(double dt)
 
 	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
-	/*std::ostringstream ss;
+	std::ostringstream ss;
 	ss.precision(5);
 	float fps = (float)(1.f / dt);
 	ss << "FPS: " << fps;
@@ -486,7 +515,20 @@ void SceneText::Update(double dt)
 	std::ostringstream ss1;
 	ss1.precision(4);
 	ss1 << "Player:" << playerInfo->GetPos();
-	textObj[2]->SetText(ss1.str());*/
+	textObj[2]->SetText(ss1.str());
+
+	std::ostringstream ss2;
+	int ammo = playerInfo->Getweapon()->GetMagRound();
+	ss2.precision(1);
+	ss2<<ammo;
+	ammotxt->SetText(ss2.str());
+
+	std::ostringstream ss3;
+	int hp = playerInfo->GetHealth();
+	ss3.precision(2);
+	ss3 << hp << "%";
+	hptxt->SetText(ss3.str());
+
 }
 
 void SceneText::Render()
@@ -520,7 +562,7 @@ void SceneText::GenerateAsteroids()
 		float scale = Math::RandFloatMinMax(1, 8);
 		Vector3 position(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));
 		Vector3 vel(Math::RandFloatMinMax(-100.f, 100.f), Math::RandFloatMinMax(-30.f, 30.f), Math::RandFloatMinMax(-90.f, 80.f));
-		Asteroid* ast = Create::asteroid("asteroid", position, vel, Vector3(scale, scale, scale),EntityBase::GO_ASTEROID,1);
+		Asteroid* ast = Create::asteroid("asteroid", position, vel, Vector3(scale, scale, scale), 1);
 		ast->InitLOD("asteroid", "sphere", "cubeSG");
 		ast->SetCollider(true);
 		float hsize = scale * 2;
