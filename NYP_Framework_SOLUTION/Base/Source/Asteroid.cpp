@@ -65,6 +65,7 @@ Asteroid* Create::asteroid(const std::string& _meshName,
 	const Vector3& _position,
 	const Vector3& _direction,
 	const Vector3& _Scale,
+	const EntityBase::Entity_Type& type,
 	const float m_fSpeed)
 {
 	Mesh* modelMesh = MeshBuilder::GetInstance()->GetMesh(_meshName);
@@ -77,6 +78,9 @@ Asteroid* Create::asteroid(const std::string& _meshName,
 	result->SetVel(_direction);
 	result->SetSpeed(m_fSpeed);
 	result->SetCollider(true);
+
+	result->SetIsBall(false);
+	result->SetType(type);
 	EntityManager::GetInstance()->AddEntity(result);
 	return result;
 }

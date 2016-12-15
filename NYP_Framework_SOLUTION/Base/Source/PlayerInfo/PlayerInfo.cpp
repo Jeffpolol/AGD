@@ -30,7 +30,14 @@ CPlayerInfo::CPlayerInfo(void)
 	, m_health(100)
 {
 }
-
+void CPlayerInfo::setPlayer(GenericEntity* player)
+{
+	this->player = player;
+}
+GenericEntity* CPlayerInfo::getPlayer()
+{
+	return player;
+}
 CPlayerInfo::~CPlayerInfo(void)
 {
 	if (secondaryWeapon)
@@ -333,7 +340,7 @@ void CPlayerInfo::Update(double dt)
 			strafing = true;
 
 		}
-
+		player->SetPosition(position);
 	
 		// Constrain the position
 		//Constrain();

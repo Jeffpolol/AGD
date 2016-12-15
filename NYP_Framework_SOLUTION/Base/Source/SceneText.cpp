@@ -192,21 +192,29 @@ void SceneText::Init()
 
 	//ast->InitLOD("asteroid", "sphere", "cubeSG");
 	
-	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
-	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
+	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f), EntityBase::GO_DEFAULT); // Reference
+	//Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z), EntityBase::GO_DEFAULT); // Lightball
+
 
 
 
 	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
 		"SKYBOX_LEFT", "SKYBOX_RIGHT",
 		"SKYBOX_TOP", "SKYBOX_BOTTOM");
+
+	GenericEntity* player = Create::Entity("quad", playerInfo->GetPos() ,EntityBase::GO_PLAYER);
+	player->SetAABB(Vector3(2,2,2),Vector3(-2,-2,-2));
+	player->SetCollider(true);
+	player->SetIsBall(true);
+	playerInfo->setPlayer(player);
+
 	//Explosion* ex = Create::explosion("explosion", Vector3(0,0,0));
 	//aCube->SetCollider(true);
 
-	GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
+	/*GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
 	aCube->SetCollider(true);
 	aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
-	aCube->InitLOD("cube", "sphere", "cubeSG");
+	aCube->InitLOD("cube", "sphere", "cubeSG");*/
 
 	//// Add the pointer to this new entity to the Scene Graph
 	//CSceneNode* theNode = CSceneGraph::GetInstance()->AddNode(aCube);
@@ -260,6 +268,7 @@ void SceneText::Init()
 	}
 	textObj[0]->SetText("HELLO WORLD");
 
+
 	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
 	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
 	//Create::Text2DObject("text", Vector3(0.0f, 0.0f, -1.5f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(1.f, 0, 0));	
@@ -280,6 +289,83 @@ void SceneText::Init()
 
 	// Setup the 2D entities
 
+
+}
+void SceneText::GenerateRobots()
+{
+	for (int i = 0; i < 1; i++)
+	{
+
+		//Vector3 position(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));
+		//Vector3 vel(Math::RandFloatMinMax(-10.f, 10.f), Math::RandFloatMinMax(0.f, 0.f), Math::RandFloatMinMax(-10.f, 10.f));
+		//Vector3 vel(0.1f, 0.1f, 0.1f);
+		Vector3 position(0 + (i * 5), 0, 0);
+		Vector3 vel(0, 0, 0);
+		Ball* ballRobot = Create::ball("ballHigh", Vector3(0, 0, 0), vel, Vector3(1, 1, 1), EntityBase::GO_BALL, 1);
+		ballRobot->SetCollider(false);
+		ballRobot->SetAABB(
+			Vector3(ballRobot->GetScale().x * 2, ballRobot->GetScale().y * 2, ballRobot->GetScale().z * 2),
+			Vector3(-(ballRobot->GetScale().x * 2), -(ballRobot->GetScale().y * 2), -(ballRobot->GetScale().z * 2)));
+		//CSceneNode* ballNode = CSceneGraph::GetInstance()->AddNode(ballRobot);
+		//ballNode->ApplyTranslate(position.x, position.y, position.z);
+		ballRobot->SetPosition(position);
+		ballRobot->InitLOD("ballHigh", "ballMid", "ballLow");
+		CSceneNode* ballNode = CSceneGraph::GetInstance()->AddNode(ballRobot);
+		ballRobot->setBallNode(ballNode);
+		ballRobot->getBallNode()->ApplyTranslate(position.x, position.y, position.z);
+
+
+
+		Ball* ballgunRobot = Create::ball("ballgunHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), EntityBase::GO_BALL, 1);
+		ballgunRobot->SetCollider(false);
+		ballgunRobot->SetAABB(
+			Vector3(ballgunRobot->GetScale().x * 2, ballgunRobot->GetScale().y * 2, ballgunRobot->GetScale().z * 2),
+			Vector3(-(ballgunRobot->GetScale().x * 2), -(ballgunRobot->GetScale().y * 2), -(ballgunRobot->GetScale().z * 2)));
+		ballgunRobot->InitLOD("ballgunHigh", "ballgunMid", "ballgunLow");
+		CSceneNode* grandchildNode = ballRobot->getBallNode()->AddChild(ballgunRobot);
+		ballgunRobot->setBallNode(grandchildNode);
+		//ballgunRobot->SetPosition(Vector3(-1.5f + position.x, 0 + position.y, 0 + position.z));
+		ballgunRobot->getBallNode()->ApplyTranslate(position.x, 1.8 + position.y, 2 + position.z);
+
+		Ball* ballarmRobot = Create::ball("ballarmHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), EntityBase::GO_BALL, 1);
+		ballarmRobot->SetCollider(false);
+		ballarmRobot->SetAABB(
+			Vector3(ballarmRobot->GetScale().x * 2, ballarmRobot->GetScale().y * 2, ballarmRobot->GetScale().z * 2),
+			Vector3(-(ballarmRobot->GetScale().x * 2), -(ballarmRobot->GetScale().y * 2), -(ballarmRobot->GetScale().z * 2)));
+		ballarmRobot->InitLOD("ballarmHigh", "ballarmMid", "ballarmLow");
+
+		CUpdateTransformation* baseMtx = new CUpdateTransformation();
+		CSceneNode* childNode = ballRobot->getBallNode()->AddChild(ballarmRobot);
+		ballarmRobot->setBallNode(childNode);
+
+		//	ballarmRobot->SetPosition(Vector3(1.5f + position.x, 0 + position.y, 0 + position.z));
+		ballarmRobot->getBallNode()->ApplyTranslate(1. + position.x, -0.2f + position.y, 1.6 + position.z);
+			baseMtx->ApplyUpdate(1.0f, 1.0f, 0.0f, 0.0f);
+			baseMtx->SetSteps(-10, 10);
+			ballarmRobot->getBallNode()->SetUpdateTransformation(baseMtx);
+
+
+
+		Ball* ballarmRobot2 = Create::ball("ballarmHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), EntityBase::GO_BALL, 1);
+		ballarmRobot2->SetCollider(false);
+		ballarmRobot2->SetAABB(
+			Vector3(ballarmRobot2->GetScale().x * 2, ballarmRobot2->GetScale().y * 2, ballarmRobot2->GetScale().z * 2),
+			Vector3(-(ballarmRobot2->GetScale().x * 2), -(ballarmRobot2->GetScale().y * 2), -(ballarmRobot2->GetScale().z * 2)));
+		ballarmRobot2->InitLOD("ballarmHigh", "ballarmMid", "ballarmLow");
+
+		CSceneNode* childNode2 = childNode->AddChild(ballarmRobot2);
+
+		//CUpdateTransformation* baseMtx = new CUpdateTransformation();
+		//CSceneNode* childNode = ballRobot->getBallNode()->AddChild(ballarmRobot);
+		ballarmRobot2->setBallNode(childNode2);
+
+		//	ballarmRobot->SetPosition(Vector3(1.5f + position.x, 0 + position.y, 0 + position.z));
+		ballarmRobot2->getBallNode()->ApplyTranslate(-2 + position.x,  position.y,   position.z);
+	/*	baseMtx->ApplyUpdate(1.0f, 1.0f, 0.0f, 0.0f);
+		baseMtx->SetSteps(-10, 10);
+		ballarmRobot->getBallNode()->SetUpdateTransformation(baseMtx);*/
+		
+	}
 }
 
 void SceneText::Update(double dt)
@@ -366,7 +452,7 @@ void SceneText::Update(double dt)
 
 	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
-	std::ostringstream ss;
+	/*std::ostringstream ss;
 	ss.precision(5);
 	float fps = (float)(1.f / dt);
 	ss << "FPS: " << fps;
@@ -375,6 +461,7 @@ void SceneText::Update(double dt)
 	std::ostringstream ss1;
 	ss1.precision(4);
 	ss1 << "Player:" << playerInfo->GetPos();
+
 	textObj[2]->SetText(ss1.str());
 
 	std::ostringstream ss2;
@@ -388,6 +475,7 @@ void SceneText::Update(double dt)
 	ss3.precision(2);
 	ss3 << hp << "%";
 	hptxt->SetText(ss3.str());
+
 
 }
 
@@ -422,7 +510,7 @@ void SceneText::GenerateAsteroids()
 		float scale = Math::RandFloatMinMax(1, 8);
 		Vector3 position(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));
 		Vector3 vel(Math::RandFloatMinMax(-100.f, 100.f), Math::RandFloatMinMax(-30.f, 30.f), Math::RandFloatMinMax(-90.f, 80.f));
-		Asteroid* ast = Create::asteroid("asteroid", position, vel, Vector3(scale, scale, scale), 1);
+		Asteroid* ast = Create::asteroid("asteroid", position, vel, Vector3(scale, scale, scale),EntityBase::GO_ASTEROID,1);
 		ast->InitLOD("asteroid", "sphere", "cubeSG");
 		ast->SetCollider(true);
 		float hsize = scale * 2;

@@ -37,6 +37,7 @@ namespace Create
 		const Vector3& _position,
 		const Vector3& _velocity,
 		const Vector3& _Scale,
+		const EntityBase::Entity_Type& type,
 		const float m_Speed);
 };
 
