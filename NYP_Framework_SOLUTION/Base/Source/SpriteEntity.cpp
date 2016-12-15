@@ -57,7 +57,6 @@ SpriteEntity* Create::Sprite2DObject(const std::string& _meshName, const Vector3
 	result->SetPosition(_position);
 	result->SetScale(_scale);
 	result->SetTextRenderMode(SpriteEntity::MODE_2D);
-	result->SetIsBall(false);
 	EntityManager::GetInstance()->AddEntity(result);
 	return result;
 }

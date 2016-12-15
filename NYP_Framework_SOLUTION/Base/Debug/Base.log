@@ -1,9 +1,13 @@
-﻿Build started 12/14/2016 9:31:21 PM.
+﻿Build started 12/15/2016 3:02:25 AM.
      1>Project "C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Base\Base.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/Common/Source" /I"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glfw/include" /I"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glew/include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\SceneText.cpp
-         SceneText.cpp
-     1>c:\users\yue xian\desktop\agd\nyp_framework_solution\base\source\scenetext.cpp(248): warning C4305: 'argument' : truncation from 'double' to 'float'
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/Common/Source" /I"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glfw/include" /I"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glew/include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\WeaponEntity.cpp
+         WeaponEntity.cpp
+     1>c:\users\yue xian\desktop\agd\nyp_framework_solution\base\source\weaponentity.cpp(27): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\yue xian\desktop\agd\nyp_framework_solution\base\source\weaponentity.cpp(28): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\yue xian\desktop\agd\nyp_framework_solution\base\source\weaponentity.cpp(34): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\yue xian\desktop\agd\nyp_framework_solution\base\source\weaponentity.cpp(40): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\yue xian\desktop\agd\nyp_framework_solution\base\source\weaponentity.cpp(66): warning C4305: 'argument' : truncation from 'double' to 'float'
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Debug" /LIBPATH:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glfw/lib-msvc100" /LIBPATH:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\/glew/lib" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Yue Xian\Desktop\AGD\NYP_Framework_SOLUTION\Debug\Base.lib" /MACHINE:X86 Debug\EntityBase.obj
          Debug\GraphicsManager.obj
@@ -35,6 +39,7 @@
          Debug\SpatialPartition.obj
          Debug\SpriteEntity.obj
          Debug\TextEntity.obj
+         Debug\WeaponEntity.obj
          Debug\GrenadeThrow.obj
          Debug\LaserBlaster.obj
          Debug\Pistol.obj
@@ -46,4 +51,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.04
+Time Elapsed 00:00:00.72
