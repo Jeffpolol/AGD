@@ -13,8 +13,8 @@
 #include "GraphicsManager.h"
 #include "ShaderProgram.h"
 #include "EntityManager.h"
-
 #include "Ball.h"
+#include "WeaponEntity.h"
 #include "Explosion.h"
 #include "Asteroid.h"
 #include "GenericEntity.h"
@@ -164,6 +164,8 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("SKYBOX_TOP")->textureID = LoadTGA("Image//SkyBox//skybox_top.tga");
 	MeshBuilder::GetInstance()->GetMesh("SKYBOX_BOTTOM")->textureID = LoadTGA("Image//SkyBox//skybox_down.tga");
 
+	MeshBuilder::GetInstance()->GenerateRay("laser", 30.0f);
+	MeshBuilder::GetInstance()->GenerateQuad("GRIDMESH", Color(1, 1, 1), 10.f);
 
 	MeshBuilder::GetInstance()->GenerateOBJ("ballHigh", "OBJ//ball_body1.obj");
 	MeshBuilder::GetInstance()->GetMesh("ballHigh")->textureID = LoadTGA("Image//ball.tga");
@@ -199,17 +201,21 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GetMesh("ballgunLow")->textureID = LoadTGA("Image//ball.tga");
 
 
-	//float hsize = scale * 2;
-	//ast->SetAABB(Vector3(hsize, hsize, hsize), Vector3(-hsize, -hsize, -hsize));
-	MeshBuilder::GetInstance()->GenerateRay("laser", 10.0f);
+	// Create the playerinfo instance, which manages all information about the player
+	playerInfo = CPlayerInfo::GetInstance();
+	playerInfo->Init();
 
-	MeshBuilder::GetInstance()->GenerateQuad("GRIDMESH", Color(1, 1, 1), 10.f);
+	// Create and attach the camera to the scene
+	//camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(playerInfo->GetPos(), playerInfo->GetTarget(), playerInfo->GetUp());
+	playerInfo->AttachCamera(&camera);
+	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	// Set up the Spatial Partition and pass it to the EntityManager to manage
 	CSpatialPartition::GetInstance()->Init(100, 100, 10, 10);
 	CSpatialPartition::GetInstance()->SetMesh("GRIDMESH");
 	CSpatialPartition::GetInstance()->SetCamera(&camera);
-	CSpatialPartition::GetInstance()->SetLevelOfDetails(4000.0f, 16000.0f);
+	CSpatialPartition::GetInstance()->SetLevelOfDetails(40000.0f, 160000.0f);
 	EntityManager::GetInstance()->SetSpatialPartition(CSpatialPartition::GetInstance());
 
 	// Create entities into the sceneVector3(Math::RandFloatMinMax(-10, 10), Math::RandFloatMinMax(-10, 10) , Math::RandFloatMinMax(-10, 10))
@@ -219,13 +225,8 @@ void SceneText::Init()
 	//ast->InitLOD("asteroid", "sphere", "cubeSG");
 	
 	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
-	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
+	//Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z), EntityBase::GO_DEFAULT); // Lightball
 
-	GenericEntity* player = Create::Entity("quad", playerInfo->GetPos() ,EntityBase::GO_PLAYER);
-	player->SetAABB(Vector3(2,2,2),Vector3(-2,-2,-2));
-	player->SetCollider(true);
-	player->SetIsBall(true);
-	playerInfo->setPlayer(player);
 
 
 
@@ -233,16 +234,19 @@ void SceneText::Init()
 		"SKYBOX_LEFT", "SKYBOX_RIGHT",
 		"SKYBOX_TOP", "SKYBOX_BOTTOM");
 
+	/*GenericEntity* player = Create::Entity("quad", playerInfo->GetPos() );
+	player->SetAABB(Vector3(2,2,2),Vector3(-2,-2,-2));
+	player->SetCollider(true);
+	player->SetIsBall(true);
+	playerInfo->setPlayer(player);*/
+
 	//Explosion* ex = Create::explosion("explosion", Vector3(0,0,0));
 	//aCube->SetCollider(true);
 
-	GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
+	/*GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
 	aCube->SetCollider(true);
 	aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
-	aCube->InitLOD("cube", "sphere", "cubeSG");
-
-
-	
+	aCube->InitLOD("cube", "sphere", "cubeSG");*/
 
 	//// Add the pointer to this new entity to the Scene Graph
 	//CSceneNode* theNode = CSceneGraph::GetInstance()->AddNode(aCube);
@@ -285,43 +289,39 @@ void SceneText::Init()
 	theEnemy = new CEnemy();
 	theEnemy->Init();
 
-	groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
-	Create::Text2DObject("text", Vector3(0.0f, 0.0f, 0.0f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(0, 1, 1));	
-	Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
-	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
-
-
-	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
-											 "SKYBOX_LEFT", "SKYBOX_RIGHT",
-											 "SKYBOX_TOP", "SKYBOX_BOTTOM");
-
-	// Customise the ground entity
-	groundEntity->SetPosition(Vector3(0, -10, 0));
-	groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
-	groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
-	groundEntity->SetIsBall(false);
-	playerInfo->SetTerrain(groundEntity);
-	theEnemy->SetTerrain(groundEntity);
-
-	// Setup the 2D entities
+	//groundEntity = Create::Ground("GRASS_DARKGREEN", "GEO_GRASS_LIGHTGREEN");
 	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
 	for (int i = 0; i < 3; ++i)
 	{
-		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
+		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	}
 	textObj[0]->SetText("HELLO WORLD");
-	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
-	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
+
+
+//	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
+	//ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
 	//Create::Text2DObject("text", Vector3(0.0f, 0.0f, -1.5f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(1.f, 0, 0));	
 	
 	//Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
-	Create::weapon("arm",playerInfo->Getweapon());
+	//Create::weapon("arm",playerInfo->Getweapon());
 	
 
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
+
+
+	// Customise the ground entity
+	//groundEntity->SetPosition(Vector3(0, -10, 0));
+	//groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
+	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
+	//playerInfo->SetTerrain(groundEntity);
+	//theEnemy->SetTerrain(groundEntity);
+
+	// Setup the 2D entities
+
+
 }
 void SceneText::GenerateRobots()
 {
@@ -333,8 +333,8 @@ void SceneText::GenerateRobots()
 		//Vector3 vel(0.1f, 0.1f, 0.1f);
 		Vector3 position(0 + (i * 5), 0, 0);
 		Vector3 vel(0, 0, 0);
-		Ball* ballRobot = Create::ball("ballHigh", Vector3(0, 0, 0), vel, Vector3(1, 1, 1), EntityBase::GO_BALL, 1);
-		ballRobot->SetCollider(false);
+		Ball* ballRobot = Create::ball("ballHigh", Vector3(0, 0, 0), vel, Vector3(1, 1, 1), 1);
+	//	ballRobot->SetCollider(false);
 		ballRobot->SetAABB(
 			Vector3(ballRobot->GetScale().x * 2, ballRobot->GetScale().y * 2, ballRobot->GetScale().z * 2),
 			Vector3(-(ballRobot->GetScale().x * 2), -(ballRobot->GetScale().y * 2), -(ballRobot->GetScale().z * 2)));
@@ -348,7 +348,7 @@ void SceneText::GenerateRobots()
 
 
 
-		Ball* ballgunRobot = Create::ball("ballgunHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), EntityBase::GO_BALL, 1);
+		Ball* ballgunRobot = Create::ball("ballgunHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), 1);
 		ballgunRobot->SetCollider(false);
 		ballgunRobot->SetAABB(
 			Vector3(ballgunRobot->GetScale().x * 2, ballgunRobot->GetScale().y * 2, ballgunRobot->GetScale().z * 2),
@@ -359,7 +359,7 @@ void SceneText::GenerateRobots()
 		//ballgunRobot->SetPosition(Vector3(-1.5f + position.x, 0 + position.y, 0 + position.z));
 		ballgunRobot->getBallNode()->ApplyTranslate(position.x, 1.8 + position.y, 2 + position.z);
 
-		Ball* ballarmRobot = Create::ball("ballarmHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), EntityBase::GO_BALL, 1);
+		Ball* ballarmRobot = Create::ball("ballarmHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), 1);
 		ballarmRobot->SetCollider(false);
 		ballarmRobot->SetAABB(
 			Vector3(ballarmRobot->GetScale().x * 2, ballarmRobot->GetScale().y * 2, ballarmRobot->GetScale().z * 2),
@@ -378,7 +378,7 @@ void SceneText::GenerateRobots()
 
 
 
-		Ball* ballarmRobot2 = Create::ball("ballarmHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), EntityBase::GO_BALL, 1);
+		Ball* ballarmRobot2 = Create::ball("ballarmHigh", Vector3(0, 0, 0), 0, Vector3(1, 1, 1), 1);
 		ballarmRobot2->SetCollider(false);
 		ballarmRobot2->SetAABB(
 			Vector3(ballarmRobot2->GetScale().x * 2, ballarmRobot2->GetScale().y * 2, ballarmRobot2->GetScale().z * 2),
@@ -398,30 +398,8 @@ void SceneText::GenerateRobots()
 		ballarmRobot->getBallNode()->SetUpdateTransformation(baseMtx);*/
 		
 	}
-=======
-
-	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
-	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
-	//Create::Text2DObject("text", Vector3(0.0f, 0.0f, -1.5f), "DM2210", Vector3(10.0f, 10.0f, 10.0f), Color(1.f, 0, 0));	
-	
-	//Create::Sprite2DObject("arm", Vector3(0, -0.8, -1.5),Vector3(1.0f, 1.0f, 1.0f));
-	Create::weapon("arm",playerInfo->Getweapon());
-	
-
-	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
-
-
-	// Customise the ground entity
-	//groundEntity->SetPosition(Vector3(0, -10, 0));
-	//groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
-	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
-	//playerInfo->SetTerrain(groundEntity);
-	//theEnemy->SetTerrain(groundEntity);
-
-	// Setup the 2D entities
-
->>>>>>> 1c616e21a889ef970aa98f5f7f2b2979a0305026
 }
+
 void SceneText::Update(double dt)
 {
 	// Update our entities
@@ -506,7 +484,7 @@ void SceneText::Update(double dt)
 
 	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
-	std::ostringstream ss;
+	/*std::ostringstream ss;
 	ss.precision(5);
 	float fps = (float)(1.f / dt);
 	ss << "FPS: " << fps;
@@ -515,6 +493,7 @@ void SceneText::Update(double dt)
 	std::ostringstream ss1;
 	ss1.precision(4);
 	ss1 << "Player:" << playerInfo->GetPos();
+
 	textObj[2]->SetText(ss1.str());
 
 	std::ostringstream ss2;
@@ -527,7 +506,8 @@ void SceneText::Update(double dt)
 	int hp = playerInfo->GetHealth();
 	ss3.precision(2);
 	ss3 << hp << "%";
-	hptxt->SetText(ss3.str());
+	hptxt->SetText(ss3.str());*/
+
 
 }
 
@@ -542,31 +522,31 @@ void SceneText::Render()
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 	EntityManager::GetInstance()->Render();
 
-	// Setup 2D pipeline then render 2D
-	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
-	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
-	//GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
+
 	GraphicsManager::GetInstance()->DetachCamera();
 	EntityManager::GetInstance()->RenderUI();
 
 
-
-
+		// Setup 2D pipeline then render 2D
+	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
+	int halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2;
+	GraphicsManager::GetInstance()->SetOrthographicProjection(-halfWindowWidth, halfWindowWidth, -halfWindowHeight, halfWindowHeight, -10, 10);
+	//EntityManager::GetInstance()->RenderText();
 
 }
 	
 void SceneText::GenerateAsteroids()
 {
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		float scale = Math::RandFloatMinMax(1, 8);
 		Vector3 position(Math::RandFloatMinMax(-1000.f, 1000.f), Math::RandFloatMinMax(0.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));
 		Vector3 vel(Math::RandFloatMinMax(-100.f, 100.f), Math::RandFloatMinMax(-30.f, 30.f), Math::RandFloatMinMax(-90.f, 80.f));
-		Asteroid* ast = Create::asteroid("asteroid", position, vel, Vector3(scale, scale, scale), 1);
+		Asteroid* ast = Create::asteroid("asteroid", position, vel, Vector3(scale, scale, scale),1);
 		ast->InitLOD("asteroid", "sphere", "cubeSG");
 		ast->SetCollider(true);
 		float hsize = scale * 2;
-		ast->SetAABB(Vector3(hsize, hsize, hsize), Vector3(-hsize, -hsize, -hsize));
+	ast->SetAABB(Vector3(hsize, hsize, hsize), Vector3(-hsize, -hsize, -hsize));
 	}
 }
 void SceneText::Exit()

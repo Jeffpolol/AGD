@@ -78,7 +78,6 @@ Asteroid* Create::asteroid(const std::string& _meshName,
 	result->SetSpeed(m_fSpeed);
 	result->SetCollider(true);
 	result->SetIsBall(false);
-	result->SetType(type);
 	EntityManager::GetInstance()->AddEntity(result);
 	return result;
 }

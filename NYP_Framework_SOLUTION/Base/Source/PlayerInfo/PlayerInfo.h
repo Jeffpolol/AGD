@@ -4,7 +4,6 @@
 #include "../GroundEntity.h"
 #include "../WeaponInfo/WeaponInfo.h"
 #include "../GenericEntity.h"
-
 class CPlayerInfo
 {
 protected:
@@ -48,6 +47,7 @@ public:
 	// Reset this player instance to default
 	void Reset(void);
 
+	void SetHealth(int);
 	// Set position
 	void SetPos(const Vector3& pos);
 	// Set target
@@ -67,6 +67,8 @@ public:
 	// Set the terrain for the player info
 	void SetTerrain(GroundEntity* m_pTerrain);
 
+	int GetHealth();
+	CWeaponInfo* Getweapon();
 	// Get position
 	Vector3 GetPos(void) const;
 	// Get target
@@ -100,11 +102,16 @@ public:
 
 	void FireWeapon();
 
+	//void setPlayer(GenericEntity* player);
+	//GenericEntity* getPlayer();
+
 private:
+	int m_health;
 	Vector3 defaultPosition, defaultTarget, defaultUp;
 	Vector3 position, target, up;
 	Vector3 maxBoundary, minBoundary;
 	GroundEntity* m_pTerrain;
+	GenericEntity* m_hitbox;
 
 	double m_dSpeed;
 	double m_dAcceleration;
@@ -120,6 +127,8 @@ private:
 
 	FPSCamera* attachedCamera;
 
+	
+	//GenericEntity* player;
 	CWeaponInfo* primaryWeapon;
 	CWeaponInfo* secondaryWeapon;
 };

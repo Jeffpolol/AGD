@@ -55,7 +55,6 @@ void EntityManager::Render()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
-		if ((*it)->GetBall()==false)
 		(*it)->Render();
 	}
 
@@ -63,8 +62,8 @@ void EntityManager::Render()
 	CSceneGraph::GetInstance()->Render();
 
 	// Render the Spatial Partition
-	//if (theSpatialPartition)
-	//	theSpatialPartition->Render();
+	if (theSpatialPartition)
+		theSpatialPartition->Render();
 }
 
 // Render the UI entities
@@ -75,10 +74,24 @@ void EntityManager::RenderUI()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
-		if ((*it)->GetBall()==false)
 		(*it)->RenderUI();
 	}
 }
+
+void EntityManager::RenderText()
+{
+	
+	std::list<EntityBase*>::iterator it, end;
+	end = entityList.end();
+	for (it = entityList.begin(); it != end; ++it)
+	{
+		(*it)->RenderText();
+	}
+}
+
+
+
+
 
 // Add an entity to this EntityManager
 void EntityManager::AddEntity(EntityBase* _newEntity, bool bAddToSpatialPartition)
@@ -353,7 +366,7 @@ bool EntityManager::CheckForCollision(void)
 				if ((*colliderThat)->HasCollider())
 				{
 					Vector3 hitPosition = Vector3(0, 0, 0);
-
+					
 					// Get the minAABB and maxAABB for (*colliderThat)
 					CCollider *thatCollider = dynamic_cast<CCollider*>(*colliderThat);
 					Vector3 thatMinAABB = (*colliderThat)->GetPosition() + thatCollider->GetMinAABB();
@@ -364,6 +377,7 @@ bool EntityManager::CheckForCollision(void)
 												thatMinAABB, thatMaxAABB,
 												hitPosition) == true)
 					{
+						//if (colliderThat)
 						(*colliderThis)->SetIsDone(true);
 						(*colliderThat)->SetIsDone(true);
 
@@ -407,8 +421,11 @@ bool EntityManager::CheckForCollision(void)
 					{
 						if (CheckAABBCollision(thisEntity, thatEntity))
 						{
+							/*if (thisEntity->GetIsDestructible())
 							thisEntity->SetIsDone(true);
-							thatEntity->SetIsDone(true);
+
+							if (thatEntity->GetIsDestructible())
+							thatEntity->SetIsDone(true);*/
 						}
 					}
 				}
