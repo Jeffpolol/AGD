@@ -61,14 +61,11 @@ public:
 
 	// Update the status of this projectile
 	virtual void Update(double dt = 0.0333f);
-	// Render this projectile
-	virtual void Render(void);
+
 
 
 protected:
 	// The model mesh for this projectile
-	Mesh* modelMesh;
-	Mesh* DeathMesh;
 	// Boolean flag to indicate if this projectile is active. If not active, then do not compute/update
 	bool m_bStatus;
 
@@ -93,10 +90,7 @@ protected:
 
 namespace Create
 {
-	Ball* ball(const std::string& _meshName,
-		const Vector3& _position,
-		const Vector3& _velocity,
-		const Vector3& _Scale,
-		const float m_Speed );
+	Ball* ball(
+		const Vector3& _position);
 };
 

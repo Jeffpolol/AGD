@@ -4,6 +4,7 @@
 #include "../GroundEntity.h"
 #include "../WeaponInfo/WeaponInfo.h"
 #include "../GenericEntity.h"
+#include "Collider\Collider.h"
 
 class CPlayerInfo
 {
@@ -96,12 +97,16 @@ public:
 
 	// Constrain the position within the borders
 	void Constrain(void);
-
+	
 	// Handling Camera
 	void AttachCamera(FPSCamera* _cameraPtr);
 	void DetachCamera(void);
-
+	void KnockBack(Vector3 collider);
 	void FireWeapon();
+
+
+GenericEntity* m_hitbox;
+bool m_colliding;
 
 private:
 	int m_health;
@@ -109,8 +114,9 @@ private:
 	Vector3 position, target, up;
 	Vector3 maxBoundary, minBoundary;
 	GroundEntity* m_pTerrain;
-	GenericEntity* m_hitbox;
+	
 
+	
 	double m_dSpeed;
 	double m_dAcceleration;
 	double m_roll;
@@ -125,6 +131,7 @@ private:
 
 	FPSCamera* attachedCamera;
 
+	
 	CWeaponInfo* primaryWeapon;
 	CWeaponInfo* secondaryWeapon;
 };

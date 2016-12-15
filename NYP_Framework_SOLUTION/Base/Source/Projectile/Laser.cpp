@@ -15,6 +15,7 @@ CLaser::CLaser(void)
 	, angle_x(0.0)
 	, angle_y(0.0)
 	, angle_z(0.0)
+	, enemy(true)
 {
 }
 
@@ -24,6 +25,7 @@ CLaser::CLaser(Mesh* _modelMesh)
 	, angle_x(0.0)
 	, angle_y(0.0)
 	, angle_z(0.0)
+	, enemy(true)
 {
 }
 

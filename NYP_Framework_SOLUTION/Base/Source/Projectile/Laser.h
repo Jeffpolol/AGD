@@ -17,7 +17,7 @@ public:
 	void SetLength(const float m_fLength);
 	float GetLength(void) const;
 	void CalculateAngles(void);
-
+	bool enemy;
 	// Update the status of this projectile
 	void Update(double dt = 0.0333f);
 	// Render this projectile

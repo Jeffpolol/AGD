@@ -12,7 +12,7 @@
 #include "SceneManager.h"
 #include "GraphicsManager.h"
 #include "ShaderProgram.h"
-
+#include "EntityManager.h"
 
 #include "WeaponEntity.h"
 #include "Explosion.h"
@@ -26,6 +26,7 @@
 #include "SceneGraph\SceneGraph.h"
 #include "SpatialPartition\SpatialPartition.h"
 #include "Ball.h"
+
 #include <iostream>
 using namespace std;
 
@@ -142,6 +143,26 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateQuad("GEO_GRASS_LIGHTGREEN", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("GEO_GRASS_LIGHTGREEN")->textureID = LoadTGA("Image//grass_lightgreen.tga");
 	MeshBuilder::GetInstance()->GenerateCube("cubeSG", Color(1.0f, 0.64f, 0.0f), 1.0f);
+	MeshBuilder::GetInstance()->GenerateOBJ("ballLow", "OBJ//ball_body3.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballLow")->textureID = LoadTGA("Image//ball.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("ballarmHigh", "OBJ//ball_arm1.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballarmHigh")->textureID = LoadTGA("Image//ball.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("ballarmMid", "OBJ//ball_arm2.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballarmMid")->textureID = LoadTGA("Image//ball.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("ballarmLow", "OBJ//ball_arm3.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballarmLow")->textureID = LoadTGA("Image//ball.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("ballgunHigh", "OBJ//ball_gun1.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballgunHigh")->textureID = LoadTGA("Image//ball.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("ballgunMid", "OBJ//ball_gun2.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballgunMid")->textureID = LoadTGA("Image//ball.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("ballgunLow", "OBJ//ball_gun3.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballgunLow")->textureID = LoadTGA("Image//ball.tga");
+	MeshBuilder::GetInstance()->GenerateOBJ("ballHigh", "OBJ//ball_body1.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballHigh")->textureID = LoadTGA("Image//ball.tga");
+
+	MeshBuilder::GetInstance()->GenerateOBJ("ballMid", "OBJ//ball_body2.obj");
+	MeshBuilder::GetInstance()->GetMesh("ballMid")->textureID = LoadTGA("Image//ball.tga");
+
 
 	MeshBuilder::GetInstance()->GenerateSphere("explosion", Color(1, 1,1), 10, 28, 0.5f);
 	
@@ -166,38 +187,6 @@ void SceneText::Init()
 	MeshBuilder::GetInstance()->GenerateRay("laser", 30.0f);
 	MeshBuilder::GetInstance()->GenerateQuad("GRIDMESH", Color(1, 1, 1), 10.f);
 
-	MeshBuilder::GetInstance()->GenerateOBJ("ballHigh", "OBJ//ball_body1.obj");
-	MeshBuilder::GetInstance()->GetMesh("ballHigh")->textureID = LoadTGA("Image//ball.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ballMid", "OBJ//ball_body2.obj");
-	MeshBuilder::GetInstance()->GetMesh("ballMid")->textureID = LoadTGA("Image//ball.tga");
-
-
-	MeshBuilder::GetInstance()->GenerateRay("laser", 30.0f);
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ballLow", "OBJ//ball_body3.obj");
-	MeshBuilder::GetInstance()->GetMesh("ballLow")->textureID = LoadTGA("Image//ball.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ballarmHigh", "OBJ//ball_arm1.obj");
-	MeshBuilder::GetInstance()->GetMesh("ballarmHigh")->textureID = LoadTGA("Image//ball.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ballarmMid", "OBJ//ball_arm2.obj");
-	MeshBuilder::GetInstance()->GetMesh("ballarmMid")->textureID = LoadTGA("Image//ball.tga");
-
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ballarmLow", "OBJ//ball_arm3.obj");
-	MeshBuilder::GetInstance()->GetMesh("ballarmLow")->textureID = LoadTGA("Image//ball.tga");
-
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ballgunHigh", "OBJ//ball_gun1.obj");
-	MeshBuilder::GetInstance()->GetMesh("ballgunHigh")->textureID = LoadTGA("Image//ball.tga");
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ballgunMid", "OBJ//ball_gun2.obj");
-	MeshBuilder::GetInstance()->GetMesh("ballgunMid")->textureID = LoadTGA("Image//ball.tga");
-
-
-	MeshBuilder::GetInstance()->GenerateOBJ("ballgunLow", "OBJ//ball_gun3.obj");
-	MeshBuilder::GetInstance()->GetMesh("ballgunLow")->textureID = LoadTGA("Image//ball.tga");
 
 
 	MeshBuilder::GetInstance()->GenerateOBJ("asteroidHigh", "OBJ//asteroid_1.obj");
@@ -228,19 +217,61 @@ void SceneText::Init()
 	// Create entities into the sceneVector3(Math::RandFloatMinMax(-10, 10), Math::RandFloatMinMax(-10, 10) , Math::RandFloatMinMax(-10, 10))
 
 	GenerateAsteroids();
-	//GenerateRobots();
-
 
 	//ast->InitLOD("asteroid", "sphere", "cubeSG");
 	
-	Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
-	Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
+	//Create::Entity("reference", Vector3(0.0f, 0.0f, 0.0f)); // Reference
+	//Create::Entity("lightball", Vector3(lights[0]->position.x, lights[0]->position.y, lights[0]->position.z)); // Lightball
 
 
 
 	SkyBoxEntity* theSkyBox = Create::SkyBox("SKYBOX_FRONT", "SKYBOX_BACK",
 		"SKYBOX_LEFT", "SKYBOX_RIGHT",
 		"SKYBOX_TOP", "SKYBOX_BOTTOM");
+	//Explosion* ex = Create::explosion("explosion", Vector3(0,0,0));
+	//aCube->SetCollider(true);
+
+	//
+	//GenericEntity* aCube = Create::Entity("cube", Vector3(-20.0f, 0.0f, -20.0f));
+	//aCube->SetCollider(true);
+	//aCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+	//aCube->InitLOD("cube", "sphere", "cubeSG");
+
+	//// Add the pointer to this new entity to the Scene Graph
+	//CSceneNode* theNode = CSceneGraph::GetInstance()->AddNode(aCube);
+	//if (theNode == NULL)
+	//{
+	//	cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
+	//}
+
+	//GenericEntity* anotherCube = Create::Entity("cube", Vector3(-20.0f, 1.1f, -20.0f));
+	//anotherCube->SetCollider(true);
+	//anotherCube->SetAABB(Vector3(0.5f, 0.5f, 0.5f), Vector3(-0.5f, -0.5f, -0.5f));
+	//CSceneNode* anotherNode = theNode->AddChild(anotherCube);
+	//if (anotherNode == NULL)
+	//{
+	//	cout << "EntityManager::AddEntity: Unable to add to scene graph!" << endl;
+	//}
+	//
+
+	/*GenericEntity* baseCube = Create::Asset("cube", Vector3(0.0f, 0.0f, 0.0f));
+	CSceneNode* baseNode = CSceneGraph::GetInstance()->AddNode(baseCube);
+
+	CUpdateTransformation* baseMtx = new CUpdateTransformation();
+	baseMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
+	baseMtx->SetSteps(-60, 60);
+	baseNode->SetUpdateTransformation(baseMtx);
+
+	GenericEntity* childCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
+	CSceneNode* childNode = baseNode->AddChild(childCube);
+	childNode->ApplyTranslate(0.0f, 1.0f, 0.0f);
+
+	GenericEntity* grandchildCube = Create::Asset("cubeSG", Vector3(0.0f, 0.0f, 0.0f));
+	CSceneNode* grandchildNode = childNode->AddChild(grandchildCube);
+	grandchildNode->ApplyTranslate(0.0f, 0.0f, 1.0f);
+	CUpdateTransformation* aRotateMtx = new CUpdateTransformation();
+	aRotateMtx->ApplyUpdate(1.0f, 0.0f, 0.0f, 1.0f);
+	aRotateMtx->SetSteps(-120, 60);*/
  	
 	// Create a CEnemy instance
 	theEnemy = new CEnemy();
@@ -251,11 +282,11 @@ void SceneText::Init()
 	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
-	for (int i = 0; i < 3; ++i)
-	{
-		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
-	}
-	textObj[0]->SetText("HELLO WORLD");
+	//for (int i = 0; i < 3; ++i)
+	//{
+	//	textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
+	//}
+	//textObj[0]->SetText("HELLO WORLD");
 
 	hptxt = Create::Text2DObject("text", Vector3(100.0f, -160.0f, 0.0f), "", Vector3(40, 40, 40), Color(1.0f, 0.0f, 0.0f));
 	ammotxt = Create::Text2DObject("text", Vector3(200.0f, 100.0f, 0.0f), "", Vector3(70,70,70), Color(1.0f, 0.0f, 0.0f));
@@ -267,26 +298,35 @@ void SceneText::Init()
 
 	Create::Sprite2DObject("crosshair", Vector3(0.0f, 0.0f, -0.5f), Vector3(0.56f, 0.34f, 1.0f));
 
+	//Ball(Vector3(0, 0, 0));
+	//Ball(Vector3(200, 0, 0));
+	//Ball(Vector3(200, 0, 200));
+	//Ball(Vector3(0, 0, 200));
+	//Ball(Vector3(0, 0, 500));
 
+
+	for (int i = 0; i < 8; i++)
+	{
+		float scale = Math::RandFloatMinMax(1, 8);
+		Vector3 position(Math::RandFloatMinMax(-800.f, 800.f), Math::RandFloatMinMax(-80.f, 60.f), Math::RandFloatMinMax(-900.f, 800.f));
+		Create::ball(position);
+		
+	}
+
+
+	
 	// Customise the ground entity
 	//groundEntity->SetPosition(Vector3(0, -10, 0));
 	//groundEntity->SetScale(Vector3(100.0f, 100.0f, 100.0f));
 	//groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 	//playerInfo->SetTerrain(groundEntity);
 	//theEnemy->SetTerrain(groundEntity);
-	for (int a = 0; a < 6; a++)
-	{
-		Ball* ball = new Ball(Vector3(0 + (a * 10), 0, 0));
-	}
+
 	// Setup the 2D entities
 
 
 	music = new Musics();
 	music->playMusic("Sound//background_music.wav");
-}
-void SceneText::GenerateRobots()
-{
-	Ball* ball = new Ball(2);
 }
 
 void SceneText::Update(double dt)
@@ -412,18 +452,18 @@ void SceneText::Update(double dt)
 
 	GraphicsManager::GetInstance()->UpdateLights(dt);
 
-	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
-	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
-	std::ostringstream ss;
-	ss.precision(5);
-	float fps = (float)(1.f / dt);
-	ss << "FPS: " << fps;
-	textObj[1]->SetText(ss.str());
+	//// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
+	//// Eg. FPSRenderEntity or inside RenderUI for LightEntity
+	//std::ostringstream ss;
+	//ss.precision(5);
+	//float fps = (float)(1.f / dt);
+	//ss << "FPS: " << fps;
+	//textObj[1]->SetText(ss.str());
 
-	std::ostringstream ss1;
-	ss1.precision(4);
-	ss1 << "Player:" << playerInfo->GetPos();
-	textObj[2]->SetText(ss1.str());
+	//std::ostringstream ss1;
+	//ss1.precision(4);
+	//ss1 << "Player:" << playerInfo->GetPos();
+	//textObj[2]->SetText(ss1.str());
 
 	std::ostringstream ss2;
 	int ammo = playerInfo->Getweapon()->GetMagRound();

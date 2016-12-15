@@ -11,12 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Common\Source\Collider\Collider.cpp" />
     <ClCompile Include="..\Common\Source\EntityBase.cpp" />
     <ClCompile Include="..\Common\Source\GraphicsManager.cpp" />
     <ClCompile Include="..\Common\Source\MeshBuilder.cpp" />
     <ClCompile Include="..\Common\Source\SceneManager.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Asteroid.cpp" />
+    <ClCompile Include="Source\Ball.cpp" />
     <ClCompile Include="Source\Enemy\Enemy.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\Explosion.cpp" />
@@ -48,9 +50,11 @@
     <ClCompile Include="Source\WeaponInfo\WeaponInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Common\Source\Collider\Collider.h" />
     <ClInclude Include="..\Common\Source\EntityBase.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Asteroid.h" />
+    <ClInclude Include="Source\Ball.h" />
     <ClInclude Include="Source\Enemy\Enemy.h" />
     <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Explosion.h" />

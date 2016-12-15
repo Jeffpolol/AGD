@@ -25,6 +25,8 @@ public:
 	bool IsDone();
 	void SetIsDone(const bool _value);
 
+	inline void SetBall(bool ball){ this->isBall = ball; }
+	inline bool GetBall(){ return isBall; }
 	// Check if this entity has a collider class parent
 	virtual bool HasCollider(void) const;
 	// Set the flag to indicate if this entity has a collider class parent
@@ -33,15 +35,18 @@ public:
 	virtual void SetIsLaser(const bool bLaser);
 	// Get the flag, bLaser
 	virtual bool GetIsLaser(void) const;
+	
+
 
 protected:
 	Vector3 position;
 	Vector3 scale;
 
-	bool isBall;
 	bool isDone;
 	bool m_bCollider;
 	bool bLaser;
+	bool isBall;
+	
 };
 
 #endif // ENTITY_BASE_H

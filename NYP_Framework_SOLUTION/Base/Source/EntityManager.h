@@ -45,7 +45,9 @@ private:
 	bool CheckForCollision(void);
 
 	std::list<EntityBase*> entityList;
-	
+	EntityBase* player;
+
+
 	// Handler to Spatial Partition
 	CSpatialPartition* theSpatialPartition;
 

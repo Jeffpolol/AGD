@@ -323,6 +323,7 @@ void CSceneNode::Update(void)
 	if (theUpdateTransformation)
 	{
 		ApplyTransform(GetUpdateTransform());
+		
 	}
 
 	/*
@@ -362,9 +363,9 @@ void CSceneNode::Render(void)
 
 		if (theEntity)
 		{
-			//modelStack.LoadMatrix(this->GetTransform());
-			modelStack.MultMatrix(this->GetTransform());
-
+			modelStack.LoadMatrix(this->GetTransform());
+			//theEntity->SetPosition(pso)
+			
 			/*
 			Mtx44 Mtx = modelStack.Top();
 			cout << "======================================================================" << endl;

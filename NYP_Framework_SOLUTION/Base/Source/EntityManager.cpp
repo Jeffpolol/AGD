@@ -54,7 +54,7 @@ void EntityManager::Render()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
-		if ((*it)->GetBall()==false)
+		if ((*it)->GetBall() == false)
 		(*it)->Render();
 	}
 
@@ -63,7 +63,7 @@ void EntityManager::Render()
 
 	// Render the Spatial Partition
 	//if (theSpatialPartition)
-	//	theSpatialPartition->Render();
+		//theSpatialPartition->Render();
 }
 
 // Render the UI entities
@@ -88,10 +88,6 @@ void EntityManager::RenderText()
 		(*it)->RenderText();
 	}
 }
-
-
-
-
 
 // Add an entity to this EntityManager
 void EntityManager::AddEntity(EntityBase* _newEntity, bool bAddToSpatialPartition)
@@ -346,7 +342,7 @@ bool EntityManager::CheckForCollision(void)
 	// Check for Collision
 	std::list<EntityBase*>::iterator colliderThis, colliderThisEnd;
 	std::list<EntityBase*>::iterator colliderThat, colliderThatEnd;
-
+	bool playercollide = false;
 	colliderThisEnd = entityList.end();
 	for (colliderThis = entityList.begin(); colliderThis != colliderThisEnd; ++colliderThis)
 	{
@@ -407,9 +403,23 @@ bool EntityManager::CheckForCollision(void)
 		}
 		else if ((*colliderThis)->HasCollider())
 		{
-			// This object was derived from a CCollider class, then it will have Collision Detection methods
+			//This object was derived from a CCollider class, then it will have Collision Detection methods
 			//CCollider *thisCollider = dynamic_cast<CCollider*>(*colliderThis);
 			EntityBase *thisEntity = dynamic_cast<EntityBase*>(*colliderThis);
+			
+			if (CheckSphereCollision(thisEntity, CPlayerInfo::GetInstance()->m_hitbox))
+			{
+				if (CheckAABBCollision(thisEntity, CPlayerInfo::GetInstance()->m_hitbox))
+				{
+					playercollide = true;
+					CPlayerInfo::GetInstance()->KnockBack(thisEntity->GetPosition());
+					CPlayerInfo::GetInstance()->SetHealth(CPlayerInfo::GetInstance()->GetHealth()-1);
+				}
+			} 
+	
+
+
+
 
 			// Check for collision with another collider class
 			colliderThatEnd = entityList.end();
@@ -435,9 +445,13 @@ bool EntityManager::CheckForCollision(void)
 						//	std::cout << "HIT";
 						}
 					}
+	
 				}
 			}
 		}
 	}
+
+	CPlayerInfo::GetInstance()->m_colliding = playercollide;
+
 	return false;
 }

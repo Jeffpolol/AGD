@@ -1,38 +1,47 @@
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\vc120.pdb
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\vc120.idb
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\objmesh.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\enemy.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\playerinfo.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\grenade.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\laser.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\projectile.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\scenegraph.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\scenenode.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\transform.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\updatetransformation.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\scenetext.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\skyboxentity.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\grid.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\spatialpartition.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\spriteentity.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\textentity.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\grenadethrow.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\laserblaster.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\pistol.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\weaponinfo.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\application.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\entitymanager.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\fpscamera.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\genericentity.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\groundentity.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\levelofdetails.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\light.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\main.obj
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\debug\base.exe
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\debug\base.pdb
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\base.tlog\cl.command.1.tlog
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\base.tlog\cl.read.1.tlog
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\base.tlog\cl.write.1.tlog
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\base.tlog\link.command.1.tlog
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\base.tlog\link.read.1.tlog
-d:\my documents\2016_2017_sem2\dm2240 agdev\teaching materials\week_08\practical\nyp_framework_solution\base\debug\base.tlog\link.write.1.tlog
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\vc120.pdb
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\vc120.idb
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\objmesh.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\playerinfo.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\grenade.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\laser.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\projectile.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\scenegraph.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\scenenode.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\transform.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\updatetransformation.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\scenetext.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\skyboxentity.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\grid.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\spatialpartition.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\spriteentity.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\textentity.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\weaponentity.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\grenadethrow.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\laserblaster.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\pistol.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\weaponinfo.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\collider.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\entitybase.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\graphicsmanager.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\meshbuilder.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\scenemanager.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\application.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\asteroid.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\ball.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\enemy.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\entitymanager.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\explosion.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\fpscamera.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\genericentity.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\groundentity.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\levelofdetails.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\light.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\main.obj
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\debug\base.exe
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\debug\base.pdb
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\base.tlog\cl.command.1.tlog
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\base.tlog\cl.read.1.tlog
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\base.tlog\cl.write.1.tlog
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\base.tlog\link.command.1.tlog
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\base.tlog\link.read.1.tlog
+c:\users\yue xian\desktop\backup\8-12 pm\nyp_framework_solution\base\debug\base.tlog\link.write.1.tlog

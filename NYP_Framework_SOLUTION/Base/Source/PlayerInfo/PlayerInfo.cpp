@@ -75,11 +75,13 @@ void CPlayerInfo::Init(void)
 
 	//set the player hitbox
 
-	m_hitbox = Create::Entity("cube", position,Vector3(20,20,20));
-	m_hitbox->SetCollider(true);
+	m_hitbox = Create::Entity("cube", position,Vector3(50,50,50));
+	m_hitbox->SetCollider(false);
 	float s = 5;
 	m_hitbox->SetAABB(Vector3(s, s, s), Vector3(-s, -s, -s));
-	//m_hitbox->SetDestructible(0);
+	//m_hitbox->iscolliding = 0;
+	//m_hitbox->isPlayer = 1;
+	m_colliding = false;
 	
 }
 
@@ -284,28 +286,33 @@ void CPlayerInfo::UpdateFreeFall(double dt)
  ********************************************************************************/
 void CPlayerInfo::Update(double dt)
 {
+	m_hitbox->SetPosition(position);
 	bool strafing = false;
 	double mouse_diff_x, mouse_diff_y;
 	MouseController::GetInstance()->GetMouseDelta(mouse_diff_x, mouse_diff_y);
-
+	//position = m_hitbox->GetPosition();
 	double camera_yaw = mouse_diff_x * 0.0174555555555556;		// 3.142 / 180.0
 	double camera_pitch = mouse_diff_y * 0.0174555555555556;	// 3.142 / 180.0
-
+	std::cout <<m_colliding << std::endl;
 	// Update the position if the WASD buttons were activated
-	if (KeyboardController::GetInstance()->IsKeyDown('W') ||
+
+	if ((KeyboardController::GetInstance()->IsKeyDown('W') ||
 		KeyboardController::GetInstance()->IsKeyDown('A') ||
 		KeyboardController::GetInstance()->IsKeyDown('S') ||
-		KeyboardController::GetInstance()->IsKeyDown('D'))
+		KeyboardController::GetInstance()->IsKeyDown('D')) && !m_colliding)
 	{
 		Vector3 viewVector = target - position;
 		Vector3 rightUV;
 		if (KeyboardController::GetInstance()->IsKeyDown('W'))
 		{
 			position += viewVector.Normalized() * (float)m_dSpeed * (float)dt;
+			
+			
 		}
 		else if (KeyboardController::GetInstance()->IsKeyDown('S'))
 		{
 			position -= viewVector.Normalized() * (float)m_dSpeed * (float)dt;
+			
 		}
 
 		if (KeyboardController::GetInstance()->IsKeyDown('A'))
@@ -340,7 +347,7 @@ void CPlayerInfo::Update(double dt)
 		// Update the target
 		target = position + viewVector;
 	}
-
+	
 	if (!strafing)
 	{
 		if (up.x < 0)
@@ -539,7 +546,7 @@ void CPlayerInfo::Update(double dt)
 		attachedCamera->SetCameraTarget(target);
 		attachedCamera->SetCameraUp(up);
 	}
-	m_hitbox->SetPosition(Vector3(position.x,position.y,position.z));
+	
 
 }
 
@@ -601,4 +608,10 @@ void CPlayerInfo::SetHealth(int health)
 int CPlayerInfo::GetHealth()
 {
 	return m_health;
+}
+
+void CPlayerInfo::KnockBack(Vector3 op)
+{
+	Vector3 off = position - op;
+	position = position + off.Normalize()* 10;
 }

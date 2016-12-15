@@ -131,7 +131,6 @@ void CWeaponInfo::Update(const double dt)
 {
 	if (bReload)
 	{
-		
 		bFire = false;
 		rTime += dt;
 		if (rTime >= Reloadtime)
