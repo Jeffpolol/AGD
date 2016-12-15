@@ -15,13 +15,14 @@ public:
 	void Update(double _dt);
 	void Render();
 	void RenderUI();
+	void RenderText();
 
 	void AddEntity(EntityBase* _newEntity, bool bAddToSpatialPartition=false);
 	bool RemoveEntity(EntityBase* _existingEntity);
 	bool MarkForDeletion(EntityBase* _existingEntity);
 
 	void SetSpatialPartition(CSpatialPartition* theSpatialPartition);
-	void RenderText();
+
 private:
 	EntityManager();
 	virtual ~EntityManager();

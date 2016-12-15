@@ -30,14 +30,7 @@ CPlayerInfo::CPlayerInfo(void)
 	, m_health(100)
 {
 }
-//void CPlayerInfo::setPlayer(GenericEntity* player)
-//{
-//	this->player = player;
-//}
-//GenericEntity* CPlayerInfo::getPlayer()
-//{
-//	return player;
-//}
+
 CPlayerInfo::~CPlayerInfo(void)
 {
 	if (secondaryWeapon)
@@ -82,11 +75,11 @@ void CPlayerInfo::Init(void)
 
 	//set the player hitbox
 
-	//m_hitbox = Create::Entity("cube", position,Vector3(20,20,20));
-	//m_hitbox->SetCollider(true);
-	//float s = 5;
-	//m_hitbox->SetAABB(Vector3(s, s, s), Vector3(-s, -s, -s));
-	//m_hitbox->SetDestructible(0);
+	m_hitbox = Create::Entity("cube", position,Vector3(20,20,20));
+	m_hitbox->SetCollider(true);
+	float s = 5;
+	m_hitbox->SetAABB(Vector3(s, s, s), Vector3(-s, -s, -s));
+	m_hitbox->SetDestructible(0);
 	
 }
 
@@ -340,7 +333,7 @@ void CPlayerInfo::Update(double dt)
 			strafing = true;
 
 		}
-	//	player->SetPosition(position);
+
 	
 		// Constrain the position
 		//Constrain();
@@ -537,7 +530,7 @@ void CPlayerInfo::Update(double dt)
 		attachedCamera->SetCameraTarget(target);
 		attachedCamera->SetCameraUp(up);
 	}
-//	m_hitbox->SetPosition(Vector3(position.x,position.y,position.z));
+	m_hitbox->SetPosition(Vector3(position.x,position.y,position.z));
 
 }
 

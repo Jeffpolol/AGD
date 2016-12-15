@@ -22,19 +22,19 @@ WeaponEntity::~WeaponEntity()
 void WeaponEntity::Update(double dt)
 {
 
-	//if (playerweapon->GetIsreload())
-	//{
-	//	tilt += dt * 40;
-	//	position.y -= dt * 3;
-	//	return;
-	//}
-	//else
-	//{
-	//	if (position.y < -1.4)
-	//		position.y += dt * 5;
+	if (playerweapon->GetIsreload())
+	{
+		tilt += dt * 40;
+		position.y -= dt * 3;
+		return;
+	}
+	else
+	{
+		if (position.y < -1.4)
+			position.y += dt * 5;
 
-	//		tilt = 0;
-	//}
+			tilt = 0;
+	}
 	
 	if (!playerweapon->GetCanFire() && position.z > -1.7)
 		position.z -= dt*5;
